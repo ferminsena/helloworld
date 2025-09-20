@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VPES SIMS - Students Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.4.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6fa;
+      color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #7dd3fc 0%, #0ea5e9 100%);
+      transition: width 0.3s ease;
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .sidebar:hover {
+      width: 250px;
+    }
+
+    .sidebar-logo {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .logo-text {
+      color: #fde047;
+      font-weight: bold;
+      font-size: 18px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .logo-text {
+      opacity: 1;
+    }
+
+    .sidebar-menu {
+      padding-top: 20px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .menu-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .menu-item.active {
+      background: #3b82f6;
+    }
+
+    .menu-item .icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .menu-item .text {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .menu-item .text {
+      opacity: 1;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 30px;
+      margin-left: 70px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .page-title i {
+      font-size: 28px;
+      color: #0ea5e9;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #0ea5e9;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+    }
+
+    .btn-success {
+      background: #10b981;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #059669;
+    }
+
+    /* Grade Level Stats */
+    .grade-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .grade-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-top: 4px solid;
+    }
+
+    .grade-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .grade-card.grade1 { border-color: #6366f1; }
+    .grade-card.grade2 { border-color: #8b5cf6; }
+    .grade-card.grade3 { border-color: #ec4899; }
+    .grade-card.grade4 { border-color: #f59e0b; }
+    .grade-card.grade5 { border-color: #10b981; }
+    .grade-card.grade6 { border-color: #3b82f6; }
+
+    .grade-level {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .student-count {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .capacity-info {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Search and Filter */
+    .search-filter {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 40px 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+
+    .filter-select {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+    }
+
+    /* Students Table */
+    .students-table {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      background: #f8f9fa;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #666;
+      font-size: 14px;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .student-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .student-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .student-details h4 {
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .student-details p {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.enrolled {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .status-badge.inactive {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .performance-indicator {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .performance-bar {
+      width: 60px;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .performance-fill {
+      height: 100%;
+      background: #10b981;
+      border-radius: 3px;
+    }
+
+    .performance-text {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .action-btn {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: none;
+    }
+
+    .action-btn.view {
+      color: #0ea5e9;
+    }
+
+    .action-btn.edit {
+      color: #10b981;
+    }
+
+    .action-btn.report {
+      color: #f59e0b;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Quick Actions */
+    .quick-actions {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 25px;
+    }
+
+    .quick-actions-title {
+      font-weight: 600;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quick-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .quick-action-btn {
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .quick-action-btn:hover {
+      background: #f8f9fa;
+      border-color: #0ea5e9;
+    }
+
+    .quick-action-btn i {
+      display: block;
+      font-size: 20px;
+      margin-bottom: 5px;
+      color: #0ea5e9;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #eee;
+    }
+
+    .pagination-info {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 5px;
+    }
+
+    .page-btn {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .page-btn:hover {
+      background: #f8f9fa;
+    }
+
+    .page-btn.active {
+      background: #0ea5e9;
+      color: white;
+      border-color: #0ea5e9;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">ADMIN MENU</div>
+    </div>
+    <div class="sidebar-menu">
+      <a href="admin_dashboard.html" class="menu-item">
+        <div class="icon"><i class="ri-dashboard-line"></i></div>
+        <div class="text">Dashboard</div>
+      </a>
+      <a href="applications.html" class="menu-item">
+        <div class="icon"><i class="ri-article-line"></i></div>
+        <div class="text">Applications</div>
+      </a>
+      <a href="users.html" class="menu-item">
+        <div class="icon"><i class="ri-user-3-line"></i></div>
+        <div class="text">Users</div>
+      </a>
+      <a href="documents.html" class="menu-item">
+        <div class="icon"><i class="ri-file-text-line"></i></div>
+        <div class="text">Documents</div>
+      </a>
+      <a href="reports.html" class="menu-item">
+        <div class="icon"><i class="ri-bar-chart-2-line"></i></div>
+        <div class="text">Reports</div>
+      </a>
+      <a href="students.html" class="menu-item active">
+        <div class="icon"><i class="ri-graduation-cap-line"></i></div>
+        <div class="text">Students</div>
+      </a>
+      <a href="settings.html" class="menu-item">
+        <div class="icon"><i class="ri-settings-3-line"></i></div>
+        <div class="text">Settings</div>
+      </a>
+      <a href="#" class="menu-item" onclick="logout()">
+        <div class="icon"><i class="ri-logout-box-line"></i></div>
+        <div class="text">Log Out</div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">
+        <i class="ri-graduation-cap-line"></i>
+        Students Management
+      </h1>
+      <div class="header-actions">
+        <button class="btn btn-success">
+          <i class="ri-file-excel-2-line"></i> Export List
+        </button>
+        <button class="btn btn-primary">
+          <i class="ri-user-add-line"></i> Add Student
+        </button>
+      </div>
+    </div>
+
+    <!-- Grade Level Statistics -->
+    <div class="grade-stats">
+      <div class="grade-card grade1">
+        <div class="grade-level">Grade 1</div>
+        <div class="student-count">215</div>
+        <div class="capacity-info">215/250 students</div>
+      </div>
+      <div class="grade-card grade2">
+        <div class="grade-level">Grade 2</div>
+        <div class="student-count">208</div>
+        <div class="capacity-info">208/250 students</div>
+      </div>
+      <div class="grade-card grade3">
+        <div class="grade-level">Grade 3</div>
+        <div class="student-count">195</div>
+        <div class="capacity-info">195/250 students</div>
+      </div>
+      <div class="grade-card grade4">
+        <div class="grade-level">Grade 4</div>
+        <div class="student-count">202</div>
+        <div class="capacity-info">202/250 students</div>
+      </div>
+      <div class="grade-card grade5">
+        <div class="grade-level">Grade 5</div>
+        <div class="student-count">188</div>
+        <div class="capacity-info">188/250 students</div>
+      </div>
+      <div class="grade-card grade6">
+        <div class="grade-level">Grade 6</div>
+        <div class="student-count">196</div>
+        <div class="capacity-info">196/250 students</div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <h3 class="quick-actions-title">
+        <i class="ri-flashlight-line"></i>
+        Quick Actions
+      </h3>
+      <div class="quick-actions-grid">
+        <button class="quick-action-btn">
+          <i class="ri-user-search-line"></i>
+          Attendance
+        </button>
+        <button class="quick-action-btn">
+          <i class="ri-medal-line"></i>
+          Awards
+        </button>
+        <button class="quick-action-btn">
+          <i class="ri-calendar-check-line"></i>
+          Schedule
+        </button>
+        <button class="quick-action-btn">
+          <i class="ri-parent-line"></i>
+          Parents Info
+        </button>
+        <button class="quick-action-btn">
+          <i class="ri-file-list-3-line"></i>
+          Grades
+        </button>
+        <button class="quick-action-btn">
+          <i class="ri-notification-3-line"></i>
+          Send Notice
+        </button>
+      </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="search-filter">
+      <div class="filter-row">
+        <div class="search-box">
+          <input type="text" placeholder="Search by student name, ID, or parent name...">
+          <i class="ri-search-line"></i>
+        </div>
+        <select class="filter-select">
+          <option>All Grades</option>
+          <option>Grade 1</option>
+          <option>Grade 2</option>
+          <option>Grade 3</option>
+          <option>Grade 4</option>
+          <option>Grade 5</option>
+          <option>Grade 6</option>
+        </select>
+        <select class="filter-select">
+          <option>All Sections</option>
+          <option>Section A</option>
+          <option>Section B</option>
+          <option>Section C</option>
+        </select>
+        <select class="filter-select">
+          <option>All Status</option>
+          <option>Enrolled</option>
+          <option>Pending</option>
+          <option>Inactive</option>
+        </select>
+        <button class="btn btn-primary">
+          <i class="ri-filter-3-line"></i> Filter
+        </button>
+      </div>
+    </div>
+
+    <!-- Students Table -->
+    <div class="students-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Grade & Section</th>
+            <th>Parent/Guardian</th>
+            <th>Status</th>
+            <th>Performance</th>
+            <th>Attendance</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="student-info">
+                <div class="student-photo">JD</div>
+                <div class="student-details">
+                  <h4>Juan Dela Cruz</h4>
+                  <p>ID: STU-2025-001</p>
+                </div>
+              </div>
+            </td>
+            <td>Grade 1 - Section A</td>
+            <td>
+              <div>Maria Dela Cruz</div>
+              <div style="font-size: 12px; color: #999;">Mother</div>
+            </td>
+            <td><span class="status-badge enrolled">Enrolled</span></td>
+            <td>
+              <div class="performance-indicator">
+                <div class="performance-bar">
+                  <div class="performance-fill" style="width: 85%;"></div>
+                </div>
+                <span class="performance-text">85%</span>
+              </div>
+            </td>
+            <td>98%</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn view" title="View Profile">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn edit" title="Edit">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="action-btn report" title="Generate Report">
+                  <i class="ri-file-chart-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="student-info">
+                <div class="student-photo">MS</div>
+                <div class="student-details">
+                  <h4>Maria Santos</h4>
+                  <p>ID: STU-2025-002</p>
+                </div>
+              </div>
+            </td>
+            <td>Grade 2 - Section B</td>
+            <td>
+              <div>Pedro Santos</div>
+              <div style="font-size: 12px; color: #999;">Father</div>
+            </td>
+            <td><span class="status-badge enrolled">Enrolled</span></td>
+            <td>
+              <div class="performance-indicator">
+                <div class="performance-bar">
+                  <div class="performance-fill" style="width: 92%;"></div>
+                </div>
+                <span class="performance-text">92%</span>
+              </div>
+            </td>
+            <td>100%</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn view" title="View Profile">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn edit" title="Edit">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="action-btn report" title="Generate Report">
+                  <i class="ri-file-chart-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="student-info">
+                <div class="student-photo">PG</div>
+                <div class="student-details">
+                  <h4>Pedro Garcia Jr.</h4>
+                  <p>ID: STU-2025-003</p>
+                </div>
+              </div>
+            </td>
+            <td>Grade 3 - Section A</td>
+            <td>
+              <div>Pedro Garcia Sr.</div>
+              <div style="font-size: 12px; color: #999;">Father</div>
+            </td>
+            <td><span class="status-badge pending">Pending</span></td>
+            <td>
+              <div class="performance-indicator">
+                <div class="performance-bar">
+                  <div class="performance-fill" style="width: 78%;"></div>
+                </div>
+                <span class="performance-text">78%</span>
+              </div>
+            </td>
+            <td>95%</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn view" title="View Profile">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn edit" title="Edit">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="action-btn report" title="Generate Report">
+                  <i class="ri-file-chart-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="student-info">
+                <div class="student-photo">AR</div>
+                <div class="student-details">
+                  <h4>Ana Reyes</h4>
+                  <p>ID: STU-2025-004</p>
+                </div>
+              </div>
+            </td>
+            <td>Grade 1 - Section C</td>
+            <td>
+              <div>Rosa Reyes</div>
+              <div style="font-size: 12px; color: #999;">Mother</div>
+            </td>
+            <td><span class="status-badge enrolled">Enrolled</span></td>
+            <td>
+              <div class="performance-indicator">
+                <div class="performance-bar">
+                  <div class="performance-fill" style="width: 88%;"></div>
+                </div>
+                <span class="performance-text">88%</span>
+              </div>
+            </td>
+            <td>97%</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn view" title="View Profile">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn edit" title="Edit">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="action-btn report" title="Generate Report">
+                  <i class="ri-file-chart-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="student-info">
+                <div class="student-photo">JR</div>
+                <div class="student-details">
+                  <h4>Jose Rizal III</h4>
+                  <p>ID: STU-2025-005</p>
+                </div>
+              </div>
+            </td>
+            <td>Grade 4 - Section B</td>
+            <td>
+              <div>Jose Rizal Jr.</div>
+              <div style="font-size: 12px; color: #999;">Father</div>
+            </td>
+            <td><span class="status-badge enrolled">Enrolled</span></td>
+            <td>
+              <div class="performance-indicator">
+                <div class="performance-bar">
+                  <div class="performance-fill" style="width: 95%;"></div>
+                </div>
+                <span class="performance-text">95%</span>
+              </div>
+            </td>
+            <td>99%</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn view" title="View Profile">
+                  <i class="ri-eye-line"></i>
+                </button>
+                <button class="action-btn edit" title="Edit">
+                  <i class="ri-edit-line"></i>
+                </button>
+                <button class="action-btn report" title="Generate Report">
+                  <i class="ri-file-chart-line"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- Pagination -->
+      <div class="pagination">
+        <div class="pagination-info">
+          Showing 1-5 of 1,204 students
+        </div>
+        <div class="pagination-controls">
+          <button class="page-btn">Previous</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">...</button>
+          <button class="page-btn">241</button>
+          <button class="page-btn">Next</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function logout() {
+      if(confirm('Are you sure you want to logout?')) {
+        alert('Logging out...');
+      }
+    }
+
+    // Grade cards
+    document.querySelectorAll('.grade-card').forEach(card => {
+      card.addEventListener('click', function() {
+        const grade = this.querySelector('.grade-level').textContent;
+        alert(`Showing students for ${grade}`);
+      });
+    });
+
+    // Quick action buttons
+    document.querySelectorAll('.quick-action-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const action = this.textContent.trim();
+        alert(`Opening ${action}...`);
+      });
+    });
+
+    // Action buttons
+    document.querySelectorAll('.action-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const action = this.classList[1];
+        const row = this.closest('tr');
+        const studentName = row.querySelector('.student-details h4').textContent;
+        
+        if(action === 'view') {
+          alert(`Viewing profile of ${studentName}...`);
+        } else if(action === 'edit') {
+          alert(`Editing ${studentName}'s information...`);
+        } else if(action === 'report') {
+          alert(`Generating report for ${studentName}...`);
+        }
+      });
+    });
+
+    // Filter functionality
+    document.querySelectorAll('.filter-select').forEach(select => {
+      select.addEventListener('change', function() {
+        alert(`Filtering by ${this.value}`);
+      });
+    });
+  </script>
+</body>
+</html>

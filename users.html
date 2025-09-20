@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VPES SIMS - Users Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.4.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6fa;
+      color: #333;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #7dd3fc 0%, #0ea5e9 100%);
+      transition: width 0.3s ease;
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .sidebar:hover {
+      width: 250px;
+    }
+
+    .sidebar-logo {
+      padding: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .logo-text {
+      color: #fde047;
+      font-weight: bold;
+      font-size: 18px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .logo-text {
+      opacity: 1;
+    }
+
+    .sidebar-menu {
+      padding-top: 20px;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .menu-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .menu-item.active {
+      background: #3b82f6;
+    }
+
+    .menu-item .icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .menu-item .text {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .menu-item .text {
+      opacity: 1;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 30px;
+      margin-left: 70px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .sidebar:hover ~ .main-content {
+      margin-left: 250px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .page-title i {
+      font-size: 28px;
+      color: #0ea5e9;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #0ea5e9;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #0284c7;
+    }
+
+    /* User Stats */
+    .user-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .stat-card.total .stat-icon {
+      background: #e0e7ff;
+      color: #6366f1;
+    }
+
+    .stat-card.teachers .stat-icon {
+      background: #fef3c7;
+      color: #f59e0b;
+    }
+
+    .stat-card.parents .stat-icon {
+      background: #d1fae5;
+      color: #10b981;
+    }
+
+    .stat-card.active .stat-icon {
+      background: #dbeafe;
+      color: #3b82f6;
+    }
+
+    .stat-info h3 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .stat-info p {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* User Management Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn:hover {
+      color: #333;
+    }
+
+    .tab-btn.active {
+      color: #0ea5e9;
+      border-bottom-color: #0ea5e9;
+    }
+
+    /* Search and Filter */
+    .search-filter {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 40px 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+
+    .filter-select {
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      background: white;
+    }
+
+    /* Users Table */
+    .users-table {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      background: #f8f9fa;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #666;
+      font-size: 14px;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .table td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #666;
+    }
+
+    .user-details h4 {
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .user-details p {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .role-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .role-badge.teacher {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .role-badge.parent {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .status-badge.active {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-badge.inactive {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+    }
+
+    .action-btn {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: none;
+    }
+
+    .action-btn.edit {
+      color: #0ea5e9;
+    }
+
+    .action-btn.reset {
+      color: #f59e0b;
+    }
+
+    .action-btn.delete {
+      color: #ef4444;
+    }
+
+    .action-btn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #eee;
+      gap: 10px;
+    }
+
+    .pagination.show {
+      display: flex;
+    }
+
+    .pagination-info {
+      color: #666;
+      font-size: 14px;
+      margin-right: 20px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .page-btn {
+      padding: 8px 15px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background: #f8f9fa;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-text">ADMIN MENU</div>
+    </div>
+    <div class="sidebar-menu">
+      <a href="admin_dashboard.html" class="menu-item">
+        <div class="icon"><i class="ri-dashboard-line"></i></div>
+        <div class="text">Dashboard</div>
+      </a>
+      <a href="applications.html" class="menu-item">
+        <div class="icon"><i class="ri-article-line"></i></div>
+        <div class="text">Applications</div>
+      </a>
+      <a href="users.html" class="menu-item active">
+        <div class="icon"><i class="ri-user-3-line"></i></div>
+        <div class="text">Users</div>
+      </a>
+      <a href="documents.html" class="menu-item">
+        <div class="icon"><i class="ri-file-text-line"></i></div>
+        <div class="text">Documents</div>
+      </a>
+      <a href="reports.html" class="menu-item">
+        <div class="icon"><i class="ri-bar-chart-2-line"></i></div>
+        <div class="text">Reports</div>
+      </a>
+      <a href="students.html" class="menu-item">
+        <div class="icon"><i class="ri-graduation-cap-line"></i></div>
+        <div class="text">Students</div>
+      </a>
+      <a href="settings.html" class="menu-item">
+        <div class="icon"><i class="ri-settings-3-line"></i></div>
+        <div class="text">Settings</div>
+      </a>
+      <a href="#" class="menu-item" onclick="logout()">
+        <div class="icon"><i class="ri-logout-box-line"></i></div>
+        <div class="text">Log Out</div>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">
+        <i class="ri-user-3-line"></i>
+        Users Management
+      </h1>
+      <button class="btn btn-primary" onclick="addNewUser()">
+        <i class="ri-user-add-line"></i> Add New User
+      </button>
+    </div>
+
+    <!-- User Statistics -->
+    <div class="user-stats">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="ri-group-line"></i>
+        </div>
+        <div class="stat-info">
+          <h3 id="totalUsers">35</h3>
+          <p>Total Users</p>
+        </div>
+      </div>
+      <div class="stat-card teachers">
+        <div class="stat-icon">
+          <i class="ri-book-2-line"></i>
+        </div>
+        <div class="stat-info">
+          <h3 id="teacherCount">10</h3>
+          <p>Teachers</p>
+        </div>
+      </div>
+      <div class="stat-card parents">
+        <div class="stat-icon">
+          <i class="ri-parent-line"></i>
+        </div>
+        <div class="stat-info">
+          <h3 id="parentCount">25</h3>
+          <p>Parents/Guardians</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="search-filter">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search users by name, email, or ID...">
+        <i class="ri-search-line"></i>
+      </div>
+      <select class="filter-select" id="roleFilter">
+        <option value="">All Roles</option>
+        <option value="teacher">Teacher</option>
+        <option value="parent">Parent/Guardian</option>
+      </select>
+      <button class="btn btn-primary" onclick="applyFilters()">
+        <i class="ri-search-line"></i> Filter
+      </button>
+    </div>
+
+    <!-- Users Table -->
+    <div class="users-table">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Contact</th>
+            <th>Role</th>
+            <th>Last Login</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTable">
+          <!-- Data will be populated by JavaScript -->
+        </tbody>
+      </table>
+      
+      <!-- Pagination -->
+      <div class="pagination" id="paginationContainer">
+        <div class="pagination-info" id="paginationInfo">
+          Showing 1-10 of 35 users
+        </div>
+        <div class="pagination-controls">
+          <button class="page-btn" id="prevBtn" onclick="previousPage()">
+            <i class="ri-arrow-left-line"></i> Previous
+          </button>
+          <button class="page-btn" id="nextBtn" onclick="nextPage()">
+            Next <i class="ri-arrow-right-line"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Sample data - Teachers and Parents from applications
+    const allUsers = [
+      // Teachers
+      { id: 'USR-T001', name: 'Emma Rodriguez', email: 'emma.rodriguez@vpes.edu.ph', phone: '+63 912 345 6789', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 08:30 AM' },
+      { id: 'USR-T002', name: 'Michael Chen', email: 'michael.chen@vpes.edu.ph', phone: '+63 917 234 5678', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 09:15 AM' },
+      { id: 'USR-T003', name: 'Sarah Johnson', email: 'sarah.johnson@vpes.edu.ph', phone: '+63 908 345 6789', role: 'teacher', status: 'active', lastLogin: 'Jan 17, 2025 02:30 PM' },
+      { id: 'USR-T004', name: 'Robert Lee', email: 'robert.lee@vpes.edu.ph', phone: '+63 919 456 7890', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 07:45 AM' },
+      { id: 'USR-T005', name: 'Jennifer Martinez', email: 'jennifer.martinez@vpes.edu.ph', phone: '+63 906 567 8901', role: 'teacher', status: 'active', lastLogin: 'Jan 16, 2025 03:20 PM' },
+      { id: 'USR-T006', name: 'David Wilson', email: 'david.wilson@vpes.edu.ph', phone: '+63 915 678 9012', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 10:00 AM' },
+      { id: 'USR-T007', name: 'Lisa Anderson', email: 'lisa.anderson@vpes.edu.ph', phone: '+63 920 789 0123', role: 'teacher', status: 'active', lastLogin: 'Jan 17, 2025 11:30 AM' },
+      { id: 'USR-T008', name: 'James Taylor', email: 'james.taylor@vpes.edu.ph', phone: '+63 911 890 1234', role: 'teacher', status: 'active', lastLogin: 'Jan 15, 2025 04:45 PM' },
+      { id: 'USR-T009', name: 'Patricia Brown', email: 'patricia.brown@vpes.edu.ph', phone: '+63 918 901 2345', role: 'teacher', status: 'inactive', lastLogin: 'Dec 20, 2024 02:00 PM' },
+      { id: 'USR-T010', name: 'Christopher Garcia', email: 'chris.garcia@vpes.edu.ph', phone: '+63 907 012 3456', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 08:00 AM' },
+      
+      // Parents from Applications Management
+      { id: 'USR-P001', name: 'Juan Dela Cruz Sr.', email: 'juan.delacruz@gmail.com', phone: '+63 912 111 2222', role: 'parent', status: 'active', lastLogin: 'Jan 15, 2025 10:30 AM' },
+      { id: 'USR-P002', name: 'Maria Santos', email: 'maria.santos@yahoo.com', phone: '+63 917 222 3333', role: 'parent', status: 'active', lastLogin: 'Jan 14, 2025 09:00 AM' },
+      { id: 'USR-P003', name: 'Pedro Garcia', email: 'pedro.garcia@gmail.com', phone: '+63 908 333 4444', role: 'parent', status: 'active', lastLogin: 'Jan 13, 2025 11:15 AM' },
+      { id: 'USR-P004', name: 'Ana Reyes', email: 'ana.reyes@hotmail.com', phone: '+63 919 444 5555', role: 'parent', status: 'active', lastLogin: 'Jan 12, 2025 02:30 PM' },
+      { id: 'USR-P005', name: 'Jose Rizal Jr.', email: 'jose.rizal@gmail.com', phone: '+63 906 555 6666', role: 'parent', status: 'active', lastLogin: 'Jan 11, 2025 08:45 AM' },
+      { id: 'USR-P006', name: 'Luz Cruz', email: 'luz.cruz@yahoo.com', phone: '+63 915 666 7777', role: 'parent', status: 'active', lastLogin: 'Jan 10, 2025 03:00 PM' },
+      { id: 'USR-P007', name: 'Carlos Mendoza', email: 'carlos.mendoza@gmail.com', phone: '+63 920 777 8888', role: 'parent', status: 'active', lastLogin: 'Jan 09, 2025 10:00 AM' },
+      { id: 'USR-P008', name: 'Isabella Rodriguez', email: 'isabella.rodriguez@hotmail.com', phone: '+63 911 888 9999', role: 'parent', status: 'active', lastLogin: 'Jan 08, 2025 04:30 PM' },
+      { id: 'USR-P009', name: 'Miguel Torres', email: 'miguel.torres@gmail.com', phone: '+63 918 999 0000', role: 'parent', status: 'active', lastLogin: 'Jan 07, 2025 09:30 AM' },
+      { id: 'USR-P010', name: 'Sofia Gonzalez', email: 'sofia.gonzalez@yahoo.com', phone: '+63 907 000 1111', role: 'parent', status: 'active', lastLogin: 'Jan 06, 2025 11:00 AM' },
+      { id: 'USR-P011', name: 'Diego Martinez', email: 'diego.martinez@gmail.com', phone: '+63 912 123 4567', role: 'parent', status: 'active', lastLogin: 'Jan 05, 2025 02:15 PM' },
+      { id: 'USR-P012', name: 'Camila Perez', email: 'camila.perez@hotmail.com', phone: '+63 917 234 5678', role: 'parent', status: 'active', lastLogin: 'Jan 04, 2025 10:30 AM' },
+      { id: 'USR-P013', name: 'Sebastian Lopez', email: 'sebastian.lopez@gmail.com', phone: '+63 908 345 6789', role: 'parent', status: 'active', lastLogin: 'Jan 03, 2025 03:45 PM' },
+      { id: 'USR-P014', name: 'Valentina Herrera', email: 'valentina.herrera@yahoo.com', phone: '+63 919 456 7890', role: 'parent', status: 'active', lastLogin: 'Jan 02, 2025 09:00 AM' },
+      { id: 'USR-P015', name: 'Mateo Jimenez', email: 'mateo.jimenez@gmail.com', phone: '+63 906 567 8901', role: 'parent', status: 'active', lastLogin: 'Jan 01, 2025 11:30 AM' },
+      { id: 'USR-P016', name: 'Emma Morales', email: 'emma.morales@hotmail.com', phone: '+63 915 678 9012', role: 'parent', status: 'active', lastLogin: 'Dec 31, 2024 02:00 PM' },
+      { id: 'USR-P017', name: 'Leonardo Vargas', email: 'leonardo.vargas@gmail.com', phone: '+63 920 789 0123', role: 'parent', status: 'active', lastLogin: 'Dec 30, 2024 10:15 AM' },
+      { id: 'USR-P018', name: 'Mia Castillo', email: 'mia.castillo@yahoo.com', phone: '+63 911 890 1234', role: 'parent', status: 'active', lastLogin: 'Dec 29, 2024 03:30 PM' },
+      { id: 'USR-P019', name: 'Noah Ramos', email: 'noah.ramos@gmail.com', phone: '+63 918 901 2345', role: 'parent', status: 'active', lastLogin: 'Dec 28, 2024 09:45 AM' },
+      { id: 'USR-P020', name: 'Zoe Flores', email: 'zoe.flores@hotmail.com', phone: '+63 907 012 3456', role: 'parent', status: 'inactive', lastLogin: 'Dec 27, 2024 11:00 AM' },
+      { id: 'USR-P021', name: 'Ethan Silva', email: 'ethan.silva@gmail.com', phone: '+63 912 123 4568', role: 'parent', status: 'active', lastLogin: 'Dec 26, 2024 02:30 PM' },
+      { id: 'USR-P022', name: 'Aria Castro', email: 'aria.castro@yahoo.com', phone: '+63 917 234 5679', role: 'parent', status: 'active', lastLogin: 'Dec 25, 2024 10:00 AM' },
+      { id: 'USR-P023', name: 'Lucas Ortega', email: 'lucas.ortega@gmail.com', phone: '+63 908 345 6780', role: 'parent', status: 'active', lastLogin: 'Dec 24, 2024 03:15 PM' },
+      { id: 'USR-P024', name: 'Luna Medina', email: 'luna.medina@hotmail.com', phone: '+63 919 456 7891', role: 'parent', status: 'active', lastLogin: 'Dec 23, 2024 09:30 AM' },
+      { id: 'USR-P025', name: 'Gael Ruiz', email: 'gael.ruiz@gmail.com', phone: '+63 906 567 8902', role: 'parent', status: 'active', lastLogin: 'Dec 22, 2024 11:45 AM' }
+    ];
+
+    let filteredUsers = [...allUsers];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function renderTable() {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = filteredUsers.slice(startIndex, endIndex);
+      
+      const tableBody = document.getElementById('usersTable');
+      tableBody.innerHTML = '';
+      
+      pageData.forEach(user => {
+        const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>
+            <div class="user-info">
+              <div class="user-avatar">${initials.substring(0, 2)}</div>
+              <div class="user-details">
+                <h4>${user.name}</h4>
+                <p>ID: ${user.id}</p>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div>${user.email}</div>
+            <div style="color: #999; font-size: 12px;">${user.phone}</div>
+          </td>
+          <td><span class="role-badge ${user.role}">${user.role === 'parent' ? 'Parent/Guardian' : 'Teacher'}</span></td>
+          <td>${user.lastLogin}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn edit" title="Edit" onclick="editUser('${user.id}')">
+                <i class="ri-edit-line"></i>
+              </button>
+              <button class="action-btn reset" title="Reset Password" onclick="resetPassword('${user.id}')">
+                <i class="ri-lock-password-line"></i>
+              </button>
+              <button class="action-btn delete" title="Delete" onclick="deleteUser('${user.id}')">
+                <i class="ri-delete-bin-line"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+      
+      updatePagination();
+      updateStatsCounts();
+    }
+
+    function updatePagination() {
+      const totalItems = filteredUsers.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      const paginationContainer = document.getElementById('paginationContainer');
+      const paginationInfo = document.getElementById('paginationInfo');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      if (totalItems > itemsPerPage) {
+        paginationContainer.classList.add('show');
+        
+        const startItem = (currentPage - 1) * itemsPerPage + 1;
+        const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+        
+        paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${totalItems} users`;
+        
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+      } else {
+        paginationContainer.classList.remove('show');
+      }
+    }
+
+    function updateStatsCounts() {
+      const teachers = allUsers.filter(u => u.role === 'teacher').length;
+      const parents = allUsers.filter(u => u.role === 'parent').length;
+      
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      document.getElementById('teacherCount').textContent = teachers;
+      document.getElementById('parentCount').textContent = parents;
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const roleFilter = document.getElementById('roleFilter').value;
+      
+      filteredUsers = allUsers.filter(user => {
+        const matchesSearch = searchTerm === '' || 
+                             user.id.toLowerCase().includes(searchTerm) || 
+                             user.name.toLowerCase().includes(searchTerm) ||
+                             user.email.toLowerCase().includes(searchTerm);
+        
+        const matchesRole = roleFilter === '' || user.role === roleFilter;
+        
+        return matchesSearch && matchesRole;
+      });
+      
+      currentPage = 1;
+      renderTable();
+    }
+
+    function previousPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+      }
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+      }
+    }
+
+    function editUser(id) {
+      const user = allUsers.find(u => u.id === id);
+      alert(`Editing user: ${user.name}`);
+    }
+
+    function resetPassword(id) {
+      const user = allUsers.find(u => u.id === id);
+      if(confirm(`Reset password for ${user.name}?`)) {
+        alert(`Password reset link sent to ${user.email}`);
+      }
+    }
+
+    function deleteUser(id) {
+      const user = allUsers.find(u => u.id === id);
+      if(confirm(`Delete user ${user.name}?`)) {
+        alert(`User ${user.name} has been deleted`);
+      }
+    }
+
+    function addNewUser() {
+      alert('Opening Add New User form...');
+    }
+
+    function logout() {
+      if(confirm('Are you sure you want to logout?')) {
+        alert('Logging out...');
+      }
+    }
+
+    // Real-time search
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('roleFilter').addEventListener('change', applyFilters);
+
+    // Initial render
+    renderTable();
+  </script>
+</body>
+</html>

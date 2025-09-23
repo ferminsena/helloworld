@@ -10,22 +10,38 @@
     // Get only 5 most recent for display
     const recentApplications = allApplications.slice(0, 5);
 
-    // Mobile menu functions
     function toggleMobileMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.mobile-overlay');
-      
-      sidebar.classList.toggle('show');
-      overlay.classList.toggle('show');
-    }
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.querySelector('.mobile-overlay');
+  const toggleBtn = document.querySelector('.mobile-menu-toggle i');
 
-    function closeMobileMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.mobile-overlay');
-      
-      sidebar.classList.remove('show');
-      overlay.classList.remove('show');
-    }
+  sidebar.classList.toggle('show');
+  overlay.classList.toggle('show');
+
+  // Change hamburger to X
+  if (sidebar.classList.contains('show')) {
+    toggleBtn.classList.remove('ri-menu-line');
+    toggleBtn.classList.add('ri-close-line');
+    document.querySelector('.mobile-menu-toggle').classList.add('active');
+  } else {
+    toggleBtn.classList.remove('ri-close-line');
+    toggleBtn.classList.add('ri-menu-line');
+    document.querySelector('.mobile-menu-toggle').classList.remove('active');
+  }
+}
+
+function closeMobileMenu() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.querySelector('.mobile-overlay');
+  const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+
+  sidebar.classList.remove('show');
+  overlay.classList.remove('show');
+  toggleBtn.classList.remove('ri-close-line');
+  toggleBtn.classList.add('ri-menu-line');
+  document.querySelector('.mobile-menu-toggle').classList.remove('active');
+}
+
 
     // Render recent applications table (only 5 most recent)
     function renderRecentApplications() {

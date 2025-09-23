@@ -472,20 +472,28 @@
     .action-card.reports { border-left: 4px solid #f39c12; }
 
     /* Mobile Menu Toggle */
-    .mobile-menu-toggle {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1001;
-      background: #0985be;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 20px;
-    }
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;   /* <-- move to right instead of left */
+  z-index: 1001;
+  background: #0985be;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Icon rotation when active */
+.mobile-menu-toggle.active i {
+  content: "\eb99"; /* ri-close-line (X icon from Remix) */
+  font-family: "remixicon";
+}
+
 
     .mobile-overlay {
       display: none;

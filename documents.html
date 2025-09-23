@@ -233,7 +233,6 @@
     .stat-card.kindergarten { border-color: #3b82f6; }
     .stat-card.grade1 { border-color: #10b981; }
     .stat-card.grade2-6 { border-color: #f59e0b; }
-    .stat-card.complete { border-color: #8b5cf6; }
 
     .stat-icon {
       font-size: 32px;
@@ -244,7 +243,6 @@
     .stat-card.kindergarten .stat-icon { color: #3b82f6; }
     .stat-card.grade1 .stat-icon { color: #10b981; }
     .stat-card.grade2-6 .stat-icon { color: #f59e0b; }
-    .stat-card.complete .stat-icon { color: #8b5cf6; }
 
     .stat-number {
       font-size: 24px;
@@ -389,18 +387,6 @@
     .doc-type-badge.photo { background: #dcfce7; color: #166534; }
     .doc-type-badge.good-moral { background: #fef3c7; color: #92400e; }
     .doc-type-badge.sf9 { background: #ede9fe; color: #7c3aed; }
-
-    .status-badge {
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-      display: inline-block;
-    }
-
-    .status-badge.complete { background: #dcfce7; color: #166534; }
-    .status-badge.incomplete { background: #fee2e2; color: #dc2626; }
-    .status-badge.pending { background: #fef3c7; color: #92400e; }
 
     .action-buttons {
       display: flex;
@@ -619,11 +605,6 @@
         <div class="stat-number" id="grade26Docs">42</div>
         <div class="stat-label">Grades 2-6 Documents</div>
       </div>
-      <div class="stat-card complete">
-        <i class="stat-icon ri-checkbox-circle-line"></i>
-        <div class="stat-number" id="completeDocs">67</div>
-        <div class="stat-label">Complete Requirements</div>
-      </div>
     </div>
 
     <!-- Search and Filter -->
@@ -652,15 +633,6 @@
             <option value="sf9">SF9 Form</option>
           </select>
         </div>
-        <div class="filter-group">
-          <label>Status</label>
-          <select id="statusFilter">
-            <option value="">All Status</option>
-            <option value="complete">Complete</option>
-            <option value="incomplete">Incomplete</option>
-            <option value="pending">Pending</option>
-          </select>
-        </div>
 
         <button class="btn btn-primary" onclick="applyFilters()">
           <i class="ri-search-line"></i> Filter
@@ -677,7 +649,6 @@
             <th>Grade Level</th>
             <th>Document Type</th>
             <th>File Size</th>
-            <th>Status</th>
             <th>Upload Date</th>
             <th>Actions</th>
           </tr>
@@ -708,34 +679,34 @@
     // Sample student documents data
     const allStudentDocuments = [
       // Kindergarten Students
-      { id: 'SD-001', studentName: 'Sofia Marie Santos', lrn: 'LRN-K001', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Sofia_Birth_Certificate.pdf', fileSize: '245 KB', status: 'complete', uploadDate: 'Jan 15, 2025' },
-      { id: 'SD-002', studentName: 'Sofia Marie Santos', lrn: 'LRN-K001', grade: 'kindergarten', docType: 'photo', fileName: 'Sofia_2x2_Photo.jpg', fileSize: '156 KB', status: 'complete', uploadDate: 'Jan 15, 2025' },
-      { id: 'SD-003', studentName: 'Miguel Angel Cruz', lrn: 'LRN-K002', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Miguel_Birth_Certificate.pdf', fileSize: '298 KB', status: 'complete', uploadDate: 'Jan 14, 2025' },
-      { id: 'SD-004', studentName: 'Miguel Angel Cruz', lrn: 'LRN-K002', grade: 'kindergarten', docType: 'photo', fileName: 'Miguel_2x2_Photo.jpg', fileSize: '142 KB', status: 'pending', uploadDate: 'Jan 14, 2025' },
-      { id: 'SD-005', studentName: 'Isabella Rose Garcia', lrn: 'LRN-K003', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Isabella_Birth_Certificate.pdf', fileSize: '267 KB', status: 'complete', uploadDate: 'Jan 13, 2025' },
+      { id: 'SD-001', studentName: 'Sofia Marie Santos', lrn: 'LRN-K001', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Sofia_Birth_Certificate.pdf', fileSize: '245 KB',uploadDate: 'Jan 15, 2025' },
+      { id: 'SD-002', studentName: 'Sofia Marie Santos', lrn: 'LRN-K001', grade: 'kindergarten', docType: 'photo', fileName: 'Sofia_2x2_Photo.jpg', fileSize: '156 KB', uploadDate: 'Jan 15, 2025' },
+      { id: 'SD-003', studentName: 'Miguel Angel Cruz', lrn: 'LRN-K002', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Miguel_Birth_Certificate.pdf', fileSize: '298 KB', uploadDate: 'Jan 14, 2025' },
+      { id: 'SD-004', studentName: 'Miguel Angel Cruz', lrn: 'LRN-K002', grade: 'kindergarten', docType: 'photo', fileName: 'Miguel_2x2_Photo.jpg', fileSize: '142 KB', uploadDate: 'Jan 14, 2025' },
+      { id: 'SD-005', studentName: 'Isabella Rose Garcia', lrn: 'LRN-K003', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Isabella_Birth_Certificate.pdf', fileSize: '267 KB', uploadDate: 'Jan 13, 2025' },
       
       // Grade 1 Students
-      { id: 'SD-006', studentName: 'Ethan James Reyes', lrn: 'LRN-G101', grade: 'grade1', docType: 'birth-certificate', fileName: 'Ethan_Birth_Certificate.pdf', fileSize: '234 KB', status: 'complete', uploadDate: 'Jan 12, 2025' },
-      { id: 'SD-007', studentName: 'Ethan James Reyes', lrn: 'LRN-G101', grade: 'grade1', docType: 'photo', fileName: 'Ethan_2x2_Photo.jpg', fileSize: '178 KB', status: 'complete', uploadDate: 'Jan 12, 2025' },
-      { id: 'SD-008', studentName: 'Ava Grace Mendoza', lrn: 'LRN-G102', grade: 'grade1', docType: 'birth-certificate', fileName: 'Ava_Birth_Certificate.pdf', fileSize: '289 KB', status: 'complete', uploadDate: 'Jan 11, 2025' },
-      { id: 'SD-009', studentName: 'Ava Grace Mendoza', lrn: 'LRN-G102', grade: 'grade1', docType: 'photo', fileName: 'Ava_2x2_Photo.jpg', fileSize: '163 KB', status: 'complete', uploadDate: 'Jan 11, 2025' },
-      { id: 'SD-010', studentName: 'Lucas David Torres', lrn: 'LRN-G103', grade: 'grade1', docType: 'birth-certificate', fileName: 'Lucas_Birth_Certificate.pdf', fileSize: '312 KB', status: 'complete', uploadDate: 'Jan 10, 2025' },
+      { id: 'SD-006', studentName: 'Ethan James Reyes', lrn: 'LRN-G101', grade: 'grade1', docType: 'birth-certificate', fileName: 'Ethan_Birth_Certificate.pdf', fileSize: '234 KB', uploadDate: 'Jan 12, 2025' },
+      { id: 'SD-007', studentName: 'Ethan James Reyes', lrn: 'LRN-G101', grade: 'grade1', docType: 'photo', fileName: 'Ethan_2x2_Photo.jpg', fileSize: '178 KB', uploadDate: 'Jan 12, 2025' },
+      { id: 'SD-008', studentName: 'Ava Grace Mendoza', lrn: 'LRN-G102', grade: 'grade1', docType: 'birth-certificate', fileName: 'Ava_Birth_Certificate.pdf', fileSize: '289 KB', uploadDate: 'Jan 11, 2025' },
+      { id: 'SD-009', studentName: 'Ava Grace Mendoza', lrn: 'LRN-G102', grade: 'grade1', docType: 'photo', fileName: 'Ava_2x2_Photo.jpg', fileSize: '163 KB', uploadDate: 'Jan 11, 2025' },
+      { id: 'SD-010', studentName: 'Lucas David Torres', lrn: 'LRN-G103', grade: 'grade1', docType: 'birth-certificate', fileName: 'Lucas_Birth_Certificate.pdf', fileSize: '312 KB', uploadDate: 'Jan 10, 2025' },
       
       // Grades 2-6 Students
-      { id: 'SD-011', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Sophia_Birth_Certificate.pdf', fileSize: '278 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
-      { id: 'SD-012', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'photo', fileName: 'Sophia_2x2_Photo.jpg', fileSize: '145 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
-      { id: 'SD-013', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'good-moral', fileName: 'Sophia_Good_Moral.pdf', fileSize: '189 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
-      { id: 'SD-014', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'sf9', fileName: 'Sophia_SF9_Form.pdf', fileSize: '234 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-011', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Sophia_Birth_Certificate.pdf', fileSize: '278 KB', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-012', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'photo', fileName: 'Sophia_2x2_Photo.jpg', fileSize: '145 KB', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-013', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'good-moral', fileName: 'Sophia_Good_Moral.pdf', fileSize: '189 KB', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-014', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'sf9', fileName: 'Sophia_SF9_Form.pdf', fileSize: '234 KB', uploadDate: 'Jan 09, 2025' },
       
-      { id: 'SD-015', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Alexander_Birth_Certificate.pdf', fileSize: '256 KB', status: 'complete', uploadDate: 'Jan 08, 2025' },
-      { id: 'SD-016', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'photo', fileName: 'Alexander_2x2_Photo.jpg', fileSize: '167 KB', status: 'complete', uploadDate: 'Jan 08, 2025' },
-      { id: 'SD-017', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'good-moral', fileName: 'Alexander_Good_Moral.pdf', fileSize: '198 KB', status: 'pending', uploadDate: 'Jan 08, 2025' },
-      { id: 'SD-018', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'sf9', fileName: 'Alexander_SF9_Form.pdf', fileSize: '245 KB', status: 'complete', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-015', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Alexander_Birth_Certificate.pdf', fileSize: '256 KB', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-016', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'photo', fileName: 'Alexander_2x2_Photo.jpg', fileSize: '167 KB', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-017', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'good-moral', fileName: 'Alexander_Good_Moral.pdf', fileSize: '198 KB', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-018', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'sf9', fileName: 'Alexander_SF9_Form.pdf', fileSize: '245 KB', uploadDate: 'Jan 08, 2025' },
       
-      { id: 'SD-019', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Emma_Birth_Certificate.pdf', fileSize: '289 KB', status: 'complete', uploadDate: 'Jan 07, 2025' },
-      { id: 'SD-020', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'photo', fileName: 'Emma_2x2_Photo.jpg', fileSize: '156 KB', status: 'complete', uploadDate: 'Jan 07, 2025' },
-      { id: 'SD-021', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'good-moral', fileName: 'Emma_Good_Moral.pdf', fileSize: '176 KB', status: 'complete', uploadDate: 'Jan 07, 2025' },
-      { id: 'SD-022', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'sf9', fileName: 'Emma_SF9_Form.pdf', fileSize: '223 KB', status: 'incomplete', uploadDate: 'Jan 07, 2025' }
+      { id: 'SD-019', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Emma_Birth_Certificate.pdf', fileSize: '289 KB', uploadDate: 'Jan 07, 2025' },
+      { id: 'SD-020', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'photo', fileName: 'Emma_2x2_Photo.jpg', fileSize: '156 KB', uploadDate: 'Jan 07, 2025' },
+      { id: 'SD-021', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'good-moral', fileName: 'Emma_Good_Moral.pdf', fileSize: '176 KB', uploadDate: 'Jan 07, 2025' },
+      { id: 'SD-022', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'sf9', fileName: 'Emma_SF9_Form.pdf', fileSize: '223 KB', uploadDate: 'Jan 07, 2025' }
     ];
 
     let filteredDocuments = [...allStudentDocuments];
@@ -816,7 +787,6 @@
           <td><span class="grade-badge ${doc.grade}">${getGradeDisplay(doc.grade)}</span></td>
           <td><span class="doc-type-badge ${doc.docType}">${getDocumentTypeDisplay(doc.docType)}</span></td>
           <td>${doc.fileSize}</td>
-          <td><span class="status-badge ${doc.status}">${doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}</span></td>
           <td>${doc.uploadDate}</td>
           <td>
             <div class="action-buttons">
@@ -864,19 +834,16 @@
       const kindergartenCount = allStudentDocuments.filter(doc => doc.grade === 'kindergarten').length;
       const grade1Count = allStudentDocuments.filter(doc => doc.grade === 'grade1').length;
       const grade26Count = allStudentDocuments.filter(doc => doc.grade === 'grade2-6').length;
-      const completeCount = allStudentDocuments.filter(doc => doc.status === 'complete').length;
       
       document.getElementById('kindergartenDocs').textContent = kindergartenCount;
       document.getElementById('grade1Docs').textContent = grade1Count;
       document.getElementById('grade26Docs').textContent = grade26Count;
-      document.getElementById('completeDocs').textContent = completeCount;
     }
 
     function applyFilters() {
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
       const gradeFilter = document.getElementById('gradeFilter').value;
       const docTypeFilter = document.getElementById('docTypeFilter').value;
-      const statusFilter = document.getElementById('statusFilter').value;
       
       filteredDocuments = allStudentDocuments.filter(doc => {
         const matchesSearch = searchTerm === '' || 
@@ -885,9 +852,7 @@
         
         const matchesGrade = gradeFilter === '' || doc.grade === gradeFilter;
         const matchesDocType = docTypeFilter === '' || doc.docType === docTypeFilter;
-        const matchesStatus = statusFilter === '' || doc.status === statusFilter;
-        
-        return matchesSearch && matchesGrade && matchesDocType && matchesStatus;
+
       });
       
       currentPage = 1;
@@ -930,7 +895,6 @@
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('gradeFilter').addEventListener('change', applyFilters);
     document.getElementById('docTypeFilter').addEventListener('change', applyFilters);
-    document.getElementById('statusFilter').addEventListener('change', applyFilters);
 
     // Close mobile menu when clicking on menu items
     document.querySelectorAll('.menu-item').forEach(item => {

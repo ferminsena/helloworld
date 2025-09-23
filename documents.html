@@ -59,6 +59,15 @@
       padding-top: 20px;
     }
 
+    /* Show menu text when sidebar is open on mobile */
+      .sidebar.show .menu-item .text {
+        opacity: 1;
+      }
+      
+      .sidebar.show .logo-text {
+        opacity: 1;
+      }
+
     .menu-item {
       display: flex;
       align-items: center;
@@ -100,20 +109,28 @@
     }
 
     /* Mobile Menu Toggle */
-    .mobile-menu-toggle {
-      display: none;
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1001;
-      background: #0985be;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 20px;
-    }
+.mobile-menu-toggle {
+  display: none;
+  position: fixed;
+  top: 20px;
+  right: 20px;   /* <-- move to right instead of left */
+  z-index: 1001;
+  background: #0985be;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Icon rotation when active */
+.mobile-menu-toggle.active i {
+  content: "\eb99"; /* ri-close-line (X icon from Remix) */
+  font-family: "remixicon";
+}
+
 
     .mobile-overlay {
       display: none;
@@ -715,20 +732,37 @@
 
     // Mobile menu functions
     function toggleMobileMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.mobile-overlay');
-      
-      sidebar.classList.toggle('show');
-      overlay.classList.toggle('show');
-    }
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.querySelector('.mobile-overlay');
+  const toggleBtn = document.querySelector('.mobile-menu-toggle i');
 
-    function closeMobileMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.mobile-overlay');
-      
-      sidebar.classList.remove('show');
-      overlay.classList.remove('show');
-    }
+  sidebar.classList.toggle('show');
+  overlay.classList.toggle('show');
+
+  // Change hamburger to X
+  if (sidebar.classList.contains('show')) {
+    toggleBtn.classList.remove('ri-menu-line');
+    toggleBtn.classList.add('ri-close-line');
+    document.querySelector('.mobile-menu-toggle').classList.add('active');
+  } else {
+    toggleBtn.classList.remove('ri-close-line');
+    toggleBtn.classList.add('ri-menu-line');
+    document.querySelector('.mobile-menu-toggle').classList.remove('active');
+  }
+}
+
+function closeMobileMenu() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.querySelector('.mobile-overlay');
+  const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+
+  sidebar.classList.remove('show');
+  overlay.classList.remove('show');
+  toggleBtn.classList.remove('ri-close-line');
+  toggleBtn.classList.add('ri-menu-line');
+  document.querySelector('.mobile-menu-toggle').classList.remove('active');
+}
+
 
     // Get file type icon and class
     function getFileTypeInfo(docType) {

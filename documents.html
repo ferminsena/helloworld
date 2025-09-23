@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VPES SIMS - Documents Management</title>
+  <title>VPES SIMS - Student Documents Management</title>
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.4.0/fonts/remixicon.css" rel="stylesheet" />
   <style>
     * {
@@ -16,6 +16,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f6fa;
       color: #333;
+      overflow-x: hidden;
     }
 
     /* Sidebar */
@@ -25,8 +26,8 @@
       top: 0;
       width: 70px;
       height: 100vh;
-      background: linear-gradient(180deg, #7dd3fc 0%, #0ea5e9 100%);
-      transition: width 0.3s ease;
+      background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
+      transition: all 0.3s ease;
       z-index: 999;
       overflow: hidden;
     }
@@ -98,11 +99,43 @@
       opacity: 1;
     }
 
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: #0985be;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+    }
+
     /* Main Content */
     .main-content {
       padding: 30px;
       margin-left: 70px;
       transition: margin-left 0.3s ease;
+      min-height: 100vh;
+    }
+
+    .sidebar:hover ~ .main-content {
+      margin-left: 250px;
     }
 
     .page-header {
@@ -110,6 +143,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .page-title {
@@ -129,6 +164,7 @@
     .header-actions {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -141,6 +177,8 @@
       align-items: center;
       gap: 8px;
       transition: all 0.3s ease;
+      white-space: nowrap;
+      font-size: 14px;
     }
 
     .btn-primary {
@@ -152,256 +190,124 @@
       background: #0284c7;
     }
 
-    .btn-secondary {
-      background: #6b7280;
+    .btn-success {
+      background: #10b981;
       color: white;
     }
 
-    .btn-secondary:hover {
-      background: #4b5563;
+    .btn-success:hover {
+      background: #059669;
     }
 
-    /* Document Categories */
-    .doc-categories {
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-warning:hover {
+      background: #d97706;
+    }
+
+    /* Document Categories Stats */
+    .doc-stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       margin-bottom: 30px;
     }
 
-    .category-card {
+    .stat-card {
       background: white;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .category-card:hover {
-      transform: translateY(-3px);
-      border-color: #0ea5e9;
-    }
-
-    .category-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      margin-bottom: 15px;
-    }
-
-    .category-card.birth .category-icon {
-      background: #fef3c7;
-      color: #f59e0b;
-    }
-
-    .category-card.report .category-icon {
-      background: #e0e7ff;
-      color: #6366f1;
-    }
-
-    .category-card.medical .category-icon {
-      background: #fee2e2;
-      color: #ef4444;
-    }
-
-    .category-card.academic .category-icon {
-      background: #d1fae5;
-      color: #10b981;
-    }
-
-    .category-card.clearance .category-icon {
-      background: #dbeafe;
-      color: #3b82f6;
-    }
-
-    .category-card.photo .category-icon {
-      background: #fce7f3;
-      color: #ec4899;
-    }
-
-    .category-title {
-      font-weight: 600;
-      margin-bottom: 5px;
-    }
-
-    .category-count {
-      font-size: 14px;
-      color: #666;
-    }
-
-    /* Recent Documents */
-    .documents-section {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      overflow: hidden;
-    }
-
-    .section-header {
-      padding: 20px;
-      background: #f8f9fa;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .section-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .filter-buttons {
-      display: flex;
-      gap: 10px;
-    }
-
-    .filter-btn {
-      padding: 6px 12px;
-      border: 1px solid #ddd;
-      background: white;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.3s ease;
-    }
-
-    .filter-btn:hover {
-      background: #f8f9fa;
-    }
-
-    .filter-btn.active {
-      background: #0ea5e9;
-      color: white;
-      border-color: #0ea5e9;
-    }
-
-    /* Documents Grid */
-    .documents-grid {
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 20px;
-    }
-
-    .document-card {
-      background: #f8f9fa;
-      border-radius: 8px;
-      padding: 15px;
       text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
+      border-left: 4px solid;
+      transition: transform 0.3s ease;
     }
 
-    .document-card:hover {
-      background: #e5e7eb;
+    .stat-card:hover {
       transform: translateY(-2px);
     }
 
-    .document-icon {
-      font-size: 48px;
+    .stat-card.kindergarten { border-color: #3b82f6; }
+    .stat-card.grade1 { border-color: #10b981; }
+    .stat-card.grade2-6 { border-color: #f59e0b; }
+    .stat-card.complete { border-color: #8b5cf6; }
+
+    .stat-icon {
+      font-size: 32px;
       margin-bottom: 10px;
+      display: block;
     }
 
-    .document-card.pdf .document-icon {
-      color: #dc2626;
-    }
+    .stat-card.kindergarten .stat-icon { color: #3b82f6; }
+    .stat-card.grade1 .stat-icon { color: #10b981; }
+    .stat-card.grade2-6 .stat-icon { color: #f59e0b; }
+    .stat-card.complete .stat-icon { color: #8b5cf6; }
 
-    .document-card.image .document-icon {
-      color: #10b981;
-    }
-
-    .document-card.word .document-icon {
-      color: #2563eb;
-    }
-
-    .document-name {
-      font-size: 14px;
-      font-weight: 500;
+    .stat-number {
+      font-size: 24px;
+      font-weight: bold;
       margin-bottom: 5px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .document-meta {
+    .stat-label {
       font-size: 12px;
       color: #666;
     }
 
-    .document-status {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-
-    .document-status.verified {
-      background: #10b981;
-    }
-
-    .document-status.pending {
-      background: #f59e0b;
-    }
-
-    .document-status.rejected {
-      background: #ef4444;
-    }
-
-    /* Upload Area */
-    .upload-area {
+    /* Search and Filter */
+    .search-filter {
       background: white;
-      border: 2px dashed #cbd5e1;
+      padding: 20px;
       border-radius: 12px;
-      padding: 40px;
-      text-align: center;
-      margin-bottom: 30px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 25px;
     }
 
-    .upload-area:hover {
-      border-color: #0ea5e9;
-      background: #f0f9ff;
+    .filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      align-items: end;
     }
 
-    .upload-area.dragging {
-      border-color: #0ea5e9;
-      background: #e0f2fe;
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
     }
 
-    .upload-icon {
-      font-size: 48px;
-      color: #94a3b8;
-      margin-bottom: 15px;
-    }
-
-    .upload-text {
-      color: #64748b;
-      margin-bottom: 10px;
-    }
-
-    .upload-subtext {
+    .filter-group label {
       font-size: 14px;
-      color: #94a3b8;
+      color: #666;
+      font-weight: 500;
     }
 
-    /* Document Details Table */
+    .filter-group input,
+    .filter-group select {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    /* Documents Table */
+    .documents-table {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 900px;
     }
 
     .table th {
@@ -412,91 +318,233 @@
       color: #666;
       font-size: 14px;
       border-bottom: 2px solid #dee2e6;
+      white-space: nowrap;
     }
 
     .table td {
       padding: 15px;
       border-bottom: 1px solid #eee;
+      white-space: nowrap;
     }
 
     .table tr:hover {
       background: #f8f9fa;
     }
 
-    .doc-type-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
+    .doc-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doc-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .doc-icon.pdf { background: #fee2e2; color: #dc2626; }
+    .doc-icon.image { background: #fef3c7; color: #d97706; }
+
+    .doc-details h4 {
+      font-size: 14px;
+      margin-bottom: 2px;
+      max-width: 250px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-details p {
+      font-size: 12px;
+      color: #999;
+    }
+
+    .grade-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
+      text-transform: capitalize;
+      display: inline-block;
     }
 
-    .doc-type-badge.required {
-      background: #fee2e2;
-      color: #991b1b;
+    .grade-badge.kindergarten { background: #dbeafe; color: #1e40af; }
+    .grade-badge.grade1 { background: #dcfce7; color: #166534; }
+    .grade-badge.grade2-6 { background: #fef3c7; color: #92400e; }
+
+    .doc-type-badge {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      display: inline-block;
     }
 
-    .doc-type-badge.optional {
-      background: #e0e7ff;
-      color: #3730a3;
-    }
+    .doc-type-badge.birth-certificate { background: #dbeafe; color: #1e40af; }
+    .doc-type-badge.photo { background: #dcfce7; color: #166534; }
+    .doc-type-badge.good-moral { background: #fef3c7; color: #92400e; }
+    .doc-type-badge.sf9 { background: #ede9fe; color: #7c3aed; }
 
     .status-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
       font-size: 12px;
       font-weight: 500;
+      display: inline-block;
     }
 
-    .status-badge.verified {
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    .status-badge.pending {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .status-badge.rejected {
-      background: #fee2e2;
-      color: #991b1b;
-    }
+    .status-badge.complete { background: #dcfce7; color: #166534; }
+    .status-badge.incomplete { background: #fee2e2; color: #dc2626; }
+    .status-badge.pending { background: #fef3c7; color: #92400e; }
 
     .action-buttons {
       display: flex;
       gap: 5px;
+      flex-wrap: nowrap;
     }
 
     .action-btn {
-      padding: 6px 10px;
+      padding: 8px 12px;
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       transition: all 0.3s ease;
       background: none;
+      flex-shrink: 0;
+      color: white;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
-    .action-btn.view {
-      color: #0ea5e9;
-    }
-
-    .action-btn.download {
-      color: #10b981;
-    }
-
-    .action-btn.delete {
-      color: #ef4444;
-    }
+    .action-btn.view { background: #0ea5e9; }
+    .action-btn.download { background: #10b981; }
 
     .action-btn:hover {
-      transform: scale(1.2);
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    /* Pagination */
+    .pagination {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background: white;
+      border-top: 1px solid #eee;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pagination.show {
+      display: flex;
+    }
+
+    .pagination-info {
+      color: #666;
+      font-size: 14px;
+      margin-right: 20px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .page-btn {
+      padding: 8px 15px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      background: #f8f9fa;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+      
+      .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+      }
+      
+      .sidebar.show {
+        transform: translateX(0);
+      }
+      
+      .mobile-overlay.show {
+        display: block;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 80px 20px 20px 20px;
+      }
+      
+      .sidebar:hover ~ .main-content {
+        margin-left: 0;
+      }
+      
+      .doc-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .filter-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .table {
+        min-width: 750px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .doc-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .table {
+        min-width: 650px;
+      }
     }
   </style>
 </head>
 <body>
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+    <i class="ri-menu-line"></i>
+  </button>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" onclick="closeMobileMenu()"></div>
+
   <!-- Sidebar -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <div class="logo-text">ADMIN MENU</div>
     </div>
@@ -515,7 +563,7 @@
       </a>
       <a href="documents.html" class="menu-item active">
         <div class="icon"><i class="ri-file-text-line"></i></div>
-        <div class="text">Documents</div>
+        <div class="text">Student Documents</div>
       </a>
       <a href="reports.html" class="menu-item">
         <div class="icon"><i class="ri-bar-chart-2-line"></i></div>
@@ -542,268 +590,366 @@
     <div class="page-header">
       <h1 class="page-title">
         <i class="ri-file-text-line"></i>
-        Documents Management
+        Student Documents Management
       </h1>
       <div class="header-actions">
-        <button class="btn btn-secondary">
-          <i class="ri-scan-line"></i> Scan Document
+        <button class="btn btn-warning">
+          <i class="ri-upload-cloud-line"></i> Upload Document
         </button>
-        <button class="btn btn-primary">
-          <i class="ri-upload-2-line"></i> Upload Documents
+        <button class="btn btn-success">
+          <i class="ri-download-line"></i> Export List
         </button>
       </div>
     </div>
 
-    <!-- Upload Area -->
-    <div class="upload-area" id="uploadArea">
-      <i class="ri-cloud-upload-line upload-icon"></i>
-      <div class="upload-text">Drag and drop files here or click to browse</div>
-      <div class="upload-subtext">Supported formats: PDF, JPG, PNG, DOC, DOCX (Max 10MB)</div>
-    </div>
-
-    <!-- Document Categories -->
-    <div class="doc-categories">
-      <div class="category-card birth">
-        <div class="category-icon">
-          <i class="ri-file-user-line"></i>
-        </div>
-        <div class="category-title">Birth Certificates</div>
-        <div class="category-count">89 documents</div>
+    <!-- Document Categories Stats -->
+    <div class="doc-stats">
+      <div class="stat-card kindergarten">
+        <i class="stat-icon ri-bear-smile-line"></i>
+        <div class="stat-number" id="kindergartenDocs">15</div>
+        <div class="stat-label">Kindergarten Documents</div>
       </div>
-      <div class="category-card report">
-        <div class="category-icon">
-          <i class="ri-file-chart-line"></i>
-        </div>
-        <div class="category-title">Report Cards</div>
-        <div class="category-count">142 documents</div>
+      <div class="stat-card grade1">
+        <i class="stat-icon ri-number-1"></i>
+        <div class="stat-number" id="grade1Docs">18</div>
+        <div class="stat-label">Grade 1 Documents</div>
       </div>
-      <div class="category-card medical">
-        <div class="category-icon">
-          <i class="ri-hospital-line"></i>
-        </div>
-        <div class="category-title">Medical Records</div>
-        <div class="category-count">76 documents</div>
+      <div class="stat-card grade2-6">
+        <i class="stat-icon ri-numbers-line"></i>
+        <div class="stat-number" id="grade26Docs">42</div>
+        <div class="stat-label">Grades 2-6 Documents</div>
       </div>
-      <div class="category-card academic">
-        <div class="category-icon">
-          <i class="ri-book-2-line"></i>
-        </div>
-        <div class="category-title">Academic Documents</div>
-        <div class="category-count">234 documents</div>
-      </div>
-      <div class="category-card clearance">
-        <div class="category-icon">
-          <i class="ri-shield-check-line"></i>
-        </div>
-        <div class="category-title">Clearances</div>
-        <div class="category-count">58 documents</div>
-      </div>
-      <div class="category-card photo">
-        <div class="category-icon">
-          <i class="ri-image-2-line"></i>
-        </div>
-        <div class="category-title">ID Photos</div>
-        <div class="category-count">321 documents</div>
+      <div class="stat-card complete">
+        <i class="stat-icon ri-checkbox-circle-line"></i>
+        <div class="stat-number" id="completeDocs">67</div>
+        <div class="stat-label">Complete Requirements</div>
       </div>
     </div>
 
-    <!-- Recent Documents Table -->
-    <div class="documents-section">
-      <div class="section-header">
-        <h2 class="section-title">
-          <i class="ri-file-list-3-line"></i>
-          Recent Documents
-        </h2>
-        <div class="filter-buttons">
-          <button class="filter-btn active">All</button>
-          <button class="filter-btn">Pending</button>
-          <button class="filter-btn">Verified</button>
-          <button class="filter-btn">Rejected</button>
+    <!-- Search and Filter -->
+    <div class="search-filter">
+      <div class="filter-grid">
+        <div class="filter-group">
+          <label>Search Students</label>
+          <input type="text" id="searchInput" placeholder="Search by student name or LRN...">
         </div>
+        <div class="filter-group">
+          <label>Grade Level</label>
+          <select id="gradeFilter">
+            <option value="">All Grades</option>
+            <option value="kindergarten">Kindergarten</option>
+            <option value="grade1">Grade 1</option>
+            <option value="grade2-6">Grades 2-6</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Document Type</label>
+          <select id="docTypeFilter">
+            <option value="">All Documents</option>
+            <option value="birth-certificate">Birth Certificate</option>
+            <option value="photo">2x2 Photo</option>
+            <option value="good-moral">Good Moral</option>
+            <option value="sf9">SF9 Form</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select id="statusFilter">
+            <option value="">All Status</option>
+            <option value="complete">Complete</option>
+            <option value="incomplete">Incomplete</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary" onclick="applyFilters()">
+          <i class="ri-search-line"></i> Filter
+        </button>
       </div>
-      
+    </div>
+
+    <!-- Documents Table -->
+    <div class="documents-table">
       <table class="table">
         <thead>
           <tr>
-            <th>Document Name</th>
-            <th>Student</th>
-            <th>Type</th>
-            <th>Upload Date</th>
+            <th>Student Information</th>
+            <th>Grade Level</th>
+            <th>Document Type</th>
+            <th>File Size</th>
             <th>Status</th>
+            <th>Upload Date</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Birth_Certificate_JuanDelaCruz.pdf</td>
-            <td>Juan Dela Cruz</td>
-            <td><span class="doc-type-badge required">Required</span></td>
-            <td>Jan 18, 2025</td>
-            <td><span class="status-badge verified">Verified</span></td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn delete" title="Delete">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>ReportCard_MariaSantos.pdf</td>
-            <td>Maria Santos</td>
-            <td><span class="doc-type-badge required">Required</span></td>
-            <td>Jan 17, 2025</td>
-            <td><span class="status-badge pending">Pending</span></td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn delete" title="Delete">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Medical_Certificate_PedroGarcia.jpg</td>
-            <td>Pedro Garcia</td>
-            <td><span class="doc-type-badge required">Required</span></td>
-            <td>Jan 16, 2025</td>
-            <td><span class="status-badge rejected">Rejected</span></td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn delete" title="Delete">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>2x2_Photo_AnaReyes.png</td>
-            <td>Ana Reyes</td>
-            <td><span class="doc-type-badge required">Required</span></td>
-            <td>Jan 15, 2025</td>
-            <td><span class="status-badge verified">Verified</span></td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn delete" title="Delete">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Good_Moral_Certificate_JoseRizal.pdf</td>
-            <td>Jose Rizal</td>
-            <td><span class="doc-type-badge optional">Optional</span></td>
-            <td>Jan 14, 2025</td>
-            <td><span class="status-badge pending">Pending</span></td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn delete" title="Delete">
-                  <i class="ri-delete-bin-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+        <tbody id="documentsTable">
+          <!-- Data will be populated by JavaScript -->
         </tbody>
       </table>
+      
+      <!-- Pagination -->
+      <div class="pagination" id="paginationContainer">
+        <div class="pagination-info" id="paginationInfo">
+          Showing 1-10 of 75 student documents
+        </div>
+        <div class="pagination-controls">
+          <button class="page-btn" id="prevBtn" onclick="previousPage()">
+            <i class="ri-arrow-left-line"></i> Previous
+          </button>
+          <button class="page-btn" id="nextBtn" onclick="nextPage()">
+            Next <i class="ri-arrow-right-line"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </main>
 
   <script>
-    // Upload area functionality
-    const uploadArea = document.getElementById('uploadArea');
-    
-    uploadArea.addEventListener('click', () => {
-      alert('Opening file browser...');
-    });
-    
-    uploadArea.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      uploadArea.classList.add('dragging');
-    });
-    
-    uploadArea.addEventListener('dragleave', () => {
-      uploadArea.classList.remove('dragging');
-    });
-    
-    uploadArea.addEventListener('drop', (e) => {
-      e.preventDefault();
-      uploadArea.classList.remove('dragging');
-      alert('Files dropped! Processing...');
-    });
+    // Sample student documents data
+    const allStudentDocuments = [
+      // Kindergarten Students
+      { id: 'SD-001', studentName: 'Sofia Marie Santos', lrn: 'LRN-K001', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Sofia_Birth_Certificate.pdf', fileSize: '245 KB', status: 'complete', uploadDate: 'Jan 15, 2025' },
+      { id: 'SD-002', studentName: 'Sofia Marie Santos', lrn: 'LRN-K001', grade: 'kindergarten', docType: 'photo', fileName: 'Sofia_2x2_Photo.jpg', fileSize: '156 KB', status: 'complete', uploadDate: 'Jan 15, 2025' },
+      { id: 'SD-003', studentName: 'Miguel Angel Cruz', lrn: 'LRN-K002', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Miguel_Birth_Certificate.pdf', fileSize: '298 KB', status: 'complete', uploadDate: 'Jan 14, 2025' },
+      { id: 'SD-004', studentName: 'Miguel Angel Cruz', lrn: 'LRN-K002', grade: 'kindergarten', docType: 'photo', fileName: 'Miguel_2x2_Photo.jpg', fileSize: '142 KB', status: 'pending', uploadDate: 'Jan 14, 2025' },
+      { id: 'SD-005', studentName: 'Isabella Rose Garcia', lrn: 'LRN-K003', grade: 'kindergarten', docType: 'birth-certificate', fileName: 'Isabella_Birth_Certificate.pdf', fileSize: '267 KB', status: 'complete', uploadDate: 'Jan 13, 2025' },
+      
+      // Grade 1 Students
+      { id: 'SD-006', studentName: 'Ethan James Reyes', lrn: 'LRN-G101', grade: 'grade1', docType: 'birth-certificate', fileName: 'Ethan_Birth_Certificate.pdf', fileSize: '234 KB', status: 'complete', uploadDate: 'Jan 12, 2025' },
+      { id: 'SD-007', studentName: 'Ethan James Reyes', lrn: 'LRN-G101', grade: 'grade1', docType: 'photo', fileName: 'Ethan_2x2_Photo.jpg', fileSize: '178 KB', status: 'complete', uploadDate: 'Jan 12, 2025' },
+      { id: 'SD-008', studentName: 'Ava Grace Mendoza', lrn: 'LRN-G102', grade: 'grade1', docType: 'birth-certificate', fileName: 'Ava_Birth_Certificate.pdf', fileSize: '289 KB', status: 'complete', uploadDate: 'Jan 11, 2025' },
+      { id: 'SD-009', studentName: 'Ava Grace Mendoza', lrn: 'LRN-G102', grade: 'grade1', docType: 'photo', fileName: 'Ava_2x2_Photo.jpg', fileSize: '163 KB', status: 'complete', uploadDate: 'Jan 11, 2025' },
+      { id: 'SD-010', studentName: 'Lucas David Torres', lrn: 'LRN-G103', grade: 'grade1', docType: 'birth-certificate', fileName: 'Lucas_Birth_Certificate.pdf', fileSize: '312 KB', status: 'complete', uploadDate: 'Jan 10, 2025' },
+      
+      // Grades 2-6 Students
+      { id: 'SD-011', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Sophia_Birth_Certificate.pdf', fileSize: '278 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-012', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'photo', fileName: 'Sophia_2x2_Photo.jpg', fileSize: '145 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-013', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'good-moral', fileName: 'Sophia_Good_Moral.pdf', fileSize: '189 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
+      { id: 'SD-014', studentName: 'Sophia Claire Villanueva', lrn: 'LRN-G201', grade: 'grade2-6', docType: 'sf9', fileName: 'Sophia_SF9_Form.pdf', fileSize: '234 KB', status: 'complete', uploadDate: 'Jan 09, 2025' },
+      
+      { id: 'SD-015', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Alexander_Birth_Certificate.pdf', fileSize: '256 KB', status: 'complete', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-016', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'photo', fileName: 'Alexander_2x2_Photo.jpg', fileSize: '167 KB', status: 'complete', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-017', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'good-moral', fileName: 'Alexander_Good_Moral.pdf', fileSize: '198 KB', status: 'pending', uploadDate: 'Jan 08, 2025' },
+      { id: 'SD-018', studentName: 'Alexander John Morales', lrn: 'LRN-G301', grade: 'grade2-6', docType: 'sf9', fileName: 'Alexander_SF9_Form.pdf', fileSize: '245 KB', status: 'complete', uploadDate: 'Jan 08, 2025' },
+      
+      { id: 'SD-019', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'birth-certificate', fileName: 'Emma_Birth_Certificate.pdf', fileSize: '289 KB', status: 'complete', uploadDate: 'Jan 07, 2025' },
+      { id: 'SD-020', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'photo', fileName: 'Emma_2x2_Photo.jpg', fileSize: '156 KB', status: 'complete', uploadDate: 'Jan 07, 2025' },
+      { id: 'SD-021', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'good-moral', fileName: 'Emma_Good_Moral.pdf', fileSize: '176 KB', status: 'complete', uploadDate: 'Jan 07, 2025' },
+      { id: 'SD-022', studentName: 'Emma Joy Dela Rosa', lrn: 'LRN-G401', grade: 'grade2-6', docType: 'sf9', fileName: 'Emma_SF9_Form.pdf', fileSize: '223 KB', status: 'incomplete', uploadDate: 'Jan 07, 2025' }
+    ];
 
-    // Category cards
-    document.querySelectorAll('.category-card').forEach(card => {
-      card.addEventListener('click', function() {
-        const category = this.querySelector('.category-title').textContent;
-        alert(`Opening ${category}...`);
-      });
-    });
+    let filteredDocuments = [...allStudentDocuments];
+    let currentPage = 1;
+    const itemsPerPage = 10;
 
-    // Filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        alert(`Filtering by: ${this.textContent}`);
-      });
-    });
+    // Mobile menu functions
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      
+      sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
+    }
 
-    // Action buttons
-    document.querySelectorAll('.action-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const action = this.classList[1];
-        const row = this.closest('tr');
-        const docName = row.querySelector('td:first-child').textContent;
+    function closeMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      
+      sidebar.classList.remove('show');
+      overlay.classList.remove('show');
+    }
+
+    // Get file type icon and class
+    function getFileTypeInfo(docType) {
+      const typeMap = {
+        'birth-certificate': { icon: 'ri-file-pdf-line', class: 'pdf' },
+        'photo': { icon: 'ri-image-line', class: 'image' },
+        'good-moral': { icon: 'ri-file-pdf-line', class: 'pdf' },
+        'sf9': { icon: 'ri-file-pdf-line', class: 'pdf' }
+      };
+      return typeMap[docType] || { icon: 'ri-file-line', class: 'pdf' };
+    }
+
+    function getDocumentTypeDisplay(docType) {
+      const typeMap = {
+        'birth-certificate': 'Birth Certificate',
+        'photo': '2x2 Photo',
+        'good-moral': 'Good Moral',
+        'sf9': 'SF9 Form'
+      };
+      return typeMap[docType] || docType;
+    }
+
+    function getGradeDisplay(grade) {
+      const gradeMap = {
+        'kindergarten': 'Kindergarten',
+        'grade1': 'Grade 1',
+        'grade2-6': 'Grades 2-6'
+      };
+      return gradeMap[grade] || grade;
+    }
+
+    function renderTable() {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = filteredDocuments.slice(startIndex, endIndex);
+      
+      const tableBody = document.getElementById('documentsTable');
+      tableBody.innerHTML = '';
+      
+      pageData.forEach(doc => {
+        const fileInfo = getFileTypeInfo(doc.docType);
+        const row = document.createElement('tr');
         
-        if(action === 'delete') {
-          if(confirm(`Delete ${docName}?`)) {
-            alert(`Deleting ${docName}...`);
-          }
-        } else if(action === 'download') {
-          alert(`Downloading ${docName}...`);
-        } else {
-          alert(`Viewing ${docName}...`);
-        }
+        row.innerHTML = `
+          <td>
+            <div class="doc-info">
+              <div class="doc-icon ${fileInfo.class}">
+                <i class="${fileInfo.icon}"></i>
+              </div>
+              <div class="doc-details">
+                <h4>${doc.studentName}</h4>
+                <p>LRN: ${doc.lrn}</p>
+              </div>
+            </div>
+          </td>
+          <td><span class="grade-badge ${doc.grade}">${getGradeDisplay(doc.grade)}</span></td>
+          <td><span class="doc-type-badge ${doc.docType}">${getDocumentTypeDisplay(doc.docType)}</span></td>
+          <td>${doc.fileSize}</td>
+          <td><span class="status-badge ${doc.status}">${doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}</span></td>
+          <td>${doc.uploadDate}</td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn view" title="View Document" onclick="viewDocument('${doc.id}')">
+                <i class="ri-eye-line"></i> View
+              </button>
+              <button class="action-btn download" title="Download" onclick="downloadDocument('${doc.id}')">
+                <i class="ri-download-line"></i> Download
+              </button>
+            </div>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
       });
-    });
+      
+      updatePagination();
+      updateStatsCounts();
+    }
+
+    function updatePagination() {
+      const totalItems = filteredDocuments.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      const paginationContainer = document.getElementById('paginationContainer');
+      const paginationInfo = document.getElementById('paginationInfo');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      if (totalItems > itemsPerPage) {
+        paginationContainer.classList.add('show');
+        
+        const startItem = (currentPage - 1) * itemsPerPage + 1;
+        const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+        
+        paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${totalItems} student documents`;
+        
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages;
+      } else {
+        paginationContainer.classList.remove('show');
+      }
+    }
+
+    function updateStatsCounts() {
+      const kindergartenCount = allStudentDocuments.filter(doc => doc.grade === 'kindergarten').length;
+      const grade1Count = allStudentDocuments.filter(doc => doc.grade === 'grade1').length;
+      const grade26Count = allStudentDocuments.filter(doc => doc.grade === 'grade2-6').length;
+      const completeCount = allStudentDocuments.filter(doc => doc.status === 'complete').length;
+      
+      document.getElementById('kindergartenDocs').textContent = kindergartenCount;
+      document.getElementById('grade1Docs').textContent = grade1Count;
+      document.getElementById('grade26Docs').textContent = grade26Count;
+      document.getElementById('completeDocs').textContent = completeCount;
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const gradeFilter = document.getElementById('gradeFilter').value;
+      const docTypeFilter = document.getElementById('docTypeFilter').value;
+      const statusFilter = document.getElementById('statusFilter').value;
+      
+      filteredDocuments = allStudentDocuments.filter(doc => {
+        const matchesSearch = searchTerm === '' || 
+                             doc.studentName.toLowerCase().includes(searchTerm) ||
+                             doc.lrn.toLowerCase().includes(searchTerm);
+        
+        const matchesGrade = gradeFilter === '' || doc.grade === gradeFilter;
+        const matchesDocType = docTypeFilter === '' || doc.docType === docTypeFilter;
+        const matchesStatus = statusFilter === '' || doc.status === statusFilter;
+        
+        return matchesSearch && matchesGrade && matchesDocType && matchesStatus;
+      });
+      
+      currentPage = 1;
+      renderTable();
+    }
+
+    function previousPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+      }
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(filteredDocuments.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+      }
+    }
+
+    // Document action functions
+    function viewDocument(id) {
+      const doc = allStudentDocuments.find(d => d.id === id);
+      alert(`Viewing document: ${doc.fileName}\nStudent: ${doc.studentName}\nType: ${getDocumentTypeDisplay(doc.docType)}`);
+    }
+
+    function downloadDocument(id) {
+      const doc = allStudentDocuments.find(d => d.id === id);
+      alert(`Downloading: ${doc.fileName}\nStudent: ${doc.studentName}`);
+    }
 
     function logout() {
       if(confirm('Are you sure you want to logout?')) {
         alert('Logging out...');
       }
     }
+
+    // Real-time search and filter
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('gradeFilter').addEventListener('change', applyFilters);
+    document.getElementById('docTypeFilter').addEventListener('change', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    // Close mobile menu when clicking on menu items
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
+    });
+
+    // Initial render
+    renderTable();
   </script>
 </body>
 </html>

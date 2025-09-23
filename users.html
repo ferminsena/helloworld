@@ -231,7 +231,7 @@
       color: #f59e0b;
     }
 
-    .stat-card.parents .stat-icon {
+    .stat-card.students .stat-icon {
       background: #d1fae5;
       color: #10b981;
     }
@@ -379,7 +379,7 @@
       color: #92400e;
     }
 
-    .role-badge.parent {
+    .role-badge.student {
       background: #d1fae5;
       color: #065f46;
     }
@@ -887,13 +887,13 @@
           <p>Teachers</p>
         </div>
       </div>
-      <div class="stat-card parents">
+      <div class="stat-card students">
         <div class="stat-icon">
-          <i class="ri-parent-line"></i>
+          <i class="ri-graduation-cap-line"></i>
         </div>
         <div class="stat-info">
-          <h3 id="parentCount">25</h3>
-          <p>Parents/Guardians</p>
+          <h3 id="studentCount">25</h3>
+          <p>Students</p>
         </div>
       </div>
     </div>
@@ -907,7 +907,7 @@
       <select class="filter-select" id="roleFilter">
         <option value="">All Roles</option>
         <option value="teacher">Teacher</option>
-        <option value="parent">Parent/Guardian</option>
+        <option value="student">Student</option>
       </select>
       <button class="btn btn-primary" onclick="applyFilters()">
         <i class="ri-search-line"></i> Filter
@@ -949,7 +949,7 @@
   </main>
 
   <script>
-    // Sample data - Teachers and Parents from applications
+    // Sample data - Teachers and Students from applications
     const allUsers = [
       // Teachers
       { id: 'USR-T001', name: 'Emma Rodriguez', email: 'emma.rodriguez@vpes.edu.ph', phone: '+63 912 345 6789', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 08:30 AM' },
@@ -963,32 +963,32 @@
       { id: 'USR-T009', name: 'Patricia Brown', email: 'patricia.brown@vpes.edu.ph', phone: '+63 918 901 2345', role: 'teacher', status: 'inactive', lastLogin: 'Dec 20, 2024 02:00 PM' },
       { id: 'USR-T010', name: 'Christopher Garcia', email: 'chris.garcia@vpes.edu.ph', phone: '+63 907 012 3456', role: 'teacher', status: 'active', lastLogin: 'Jan 18, 2025 08:00 AM' },
       
-      // Parents from Applications Management
-      { id: 'USR-P001', name: 'Juan Dela Cruz Sr.', email: 'juan.delacruz@gmail.com', phone: '+63 912 111 2222', role: 'parent', status: 'active', lastLogin: 'Jan 15, 2025 10:30 AM' },
-      { id: 'USR-P002', name: 'Maria Santos', email: 'maria.santos@yahoo.com', phone: '+63 917 222 3333', role: 'parent', status: 'active', lastLogin: 'Jan 14, 2025 09:00 AM' },
-      { id: 'USR-P003', name: 'Pedro Garcia', email: 'pedro.garcia@gmail.com', phone: '+63 908 333 4444', role: 'parent', status: 'active', lastLogin: 'Jan 13, 2025 11:15 AM' },
-      { id: 'USR-P004', name: 'Ana Reyes', email: 'ana.reyes@hotmail.com', phone: '+63 919 444 5555', role: 'parent', status: 'active', lastLogin: 'Jan 12, 2025 02:30 PM' },
-      { id: 'USR-P005', name: 'Jose Rizal Jr.', email: 'jose.rizal@gmail.com', phone: '+63 906 555 6666', role: 'parent', status: 'active', lastLogin: 'Jan 11, 2025 08:45 AM' },
-      { id: 'USR-P006', name: 'Luz Cruz', email: 'luz.cruz@yahoo.com', phone: '+63 915 666 7777', role: 'parent', status: 'active', lastLogin: 'Jan 10, 2025 03:00 PM' },
-      { id: 'USR-P007', name: 'Carlos Mendoza', email: 'carlos.mendoza@gmail.com', phone: '+63 920 777 8888', role: 'parent', status: 'active', lastLogin: 'Jan 09, 2025 10:00 AM' },
-      { id: 'USR-P008', name: 'Isabella Rodriguez', email: 'isabella.rodriguez@hotmail.com', phone: '+63 911 888 9999', role: 'parent', status: 'active', lastLogin: 'Jan 08, 2025 04:30 PM' },
-      { id: 'USR-P009', name: 'Miguel Torres', email: 'miguel.torres@gmail.com', phone: '+63 918 999 0000', role: 'parent', status: 'active', lastLogin: 'Jan 07, 2025 09:30 AM' },
-      { id: 'USR-P010', name: 'Sofia Gonzalez', email: 'sofia.gonzalez@yahoo.com', phone: '+63 907 000 1111', role: 'parent', status: 'active', lastLogin: 'Jan 06, 2025 11:00 AM' },
-      { id: 'USR-P011', name: 'Diego Martinez', email: 'diego.martinez@gmail.com', phone: '+63 912 123 4567', role: 'parent', status: 'active', lastLogin: 'Jan 05, 2025 02:15 PM' },
-      { id: 'USR-P012', name: 'Camila Perez', email: 'camila.perez@hotmail.com', phone: '+63 917 234 5678', role: 'parent', status: 'active', lastLogin: 'Jan 04, 2025 10:30 AM' },
-      { id: 'USR-P013', name: 'Sebastian Lopez', email: 'sebastian.lopez@gmail.com', phone: '+63 908 345 6789', role: 'parent', status: 'active', lastLogin: 'Jan 03, 2025 03:45 PM' },
-      { id: 'USR-P014', name: 'Valentina Herrera', email: 'valentina.herrera@yahoo.com', phone: '+63 919 456 7890', role: 'parent', status: 'active', lastLogin: 'Jan 02, 2025 09:00 AM' },
-      { id: 'USR-P015', name: 'Mateo Jimenez', email: 'mateo.jimenez@gmail.com', phone: '+63 906 567 8901', role: 'parent', status: 'active', lastLogin: 'Jan 01, 2025 11:30 AM' },
-      { id: 'USR-P016', name: 'Emma Morales', email: 'emma.morales@hotmail.com', phone: '+63 915 678 9012', role: 'parent', status: 'active', lastLogin: 'Dec 31, 2024 02:00 PM' },
-      { id: 'USR-P017', name: 'Leonardo Vargas', email: 'leonardo.vargas@gmail.com', phone: '+63 920 789 0123', role: 'parent', status: 'active', lastLogin: 'Dec 30, 2024 10:15 AM' },
-      { id: 'USR-P018', name: 'Mia Castillo', email: 'mia.castillo@yahoo.com', phone: '+63 911 890 1234', role: 'parent', status: 'active', lastLogin: 'Dec 29, 2024 03:30 PM' },
-      { id: 'USR-P019', name: 'Noah Ramos', email: 'noah.ramos@gmail.com', phone: '+63 918 901 2345', role: 'parent', status: 'active', lastLogin: 'Dec 28, 2024 09:45 AM' },
-      { id: 'USR-P020', name: 'Zoe Flores', email: 'zoe.flores@hotmail.com', phone: '+63 907 012 3456', role: 'parent', status: 'inactive', lastLogin: 'Dec 27, 2024 11:00 AM' },
-      { id: 'USR-P021', name: 'Ethan Silva', email: 'ethan.silva@gmail.com', phone: '+63 912 123 4568', role: 'parent', status: 'active', lastLogin: 'Dec 26, 2024 02:30 PM' },
-      { id: 'USR-P022', name: 'Aria Castro', email: 'aria.castro@yahoo.com', phone: '+63 917 234 5679', role: 'parent', status: 'active', lastLogin: 'Dec 25, 2024 10:00 AM' },
-      { id: 'USR-P023', name: 'Lucas Ortega', email: 'lucas.ortega@gmail.com', phone: '+63 908 345 6780', role: 'parent', status: 'active', lastLogin: 'Dec 24, 2024 03:15 PM' },
-      { id: 'USR-P024', name: 'Luna Medina', email: 'luna.medina@hotmail.com', phone: '+63 919 456 7891', role: 'parent', status: 'active', lastLogin: 'Dec 23, 2024 09:30 AM' },
-      { id: 'USR-P025', name: 'Gael Ruiz', email: 'gael.ruiz@gmail.com', phone: '+63 906 567 8902', role: 'parent', status: 'active', lastLogin: 'Dec 22, 2024 11:45 AM' }
+      // Students from Applications Management
+      { id: 'USR-S001', name: 'Juan Dela Cruz', email: 'juan.delacruz@student.vpes.edu.ph', phone: '+63 912 111 2222', role: 'student', status: 'active', lastLogin: 'Jan 15, 2025 10:30 AM' },
+      { id: 'USR-S002', name: 'Maria Santos', email: 'maria.santos@student.vpes.edu.ph', phone: '+63 917 222 3333', role: 'student', status: 'active', lastLogin: 'Jan 14, 2025 09:00 AM' },
+      { id: 'USR-S003', name: 'Pedro Garcia', email: 'pedro.garcia@student.vpes.edu.ph', phone: '+63 908 333 4444', role: 'student', status: 'active', lastLogin: 'Jan 13, 2025 11:15 AM' },
+      { id: 'USR-S004', name: 'Ana Reyes', email: 'ana.reyes@student.vpes.edu.ph', phone: '+63 919 444 5555', role: 'student', status: 'active', lastLogin: 'Jan 12, 2025 02:30 PM' },
+      { id: 'USR-S005', name: 'Jose Rizal', email: 'jose.rizal@student.vpes.edu.ph', phone: '+63 906 555 6666', role: 'student', status: 'active', lastLogin: 'Jan 11, 2025 08:45 AM' },
+      { id: 'USR-S006', name: 'Luz Cruz', email: 'luz.cruz@student.vpes.edu.ph', phone: '+63 915 666 7777', role: 'student', status: 'active', lastLogin: 'Jan 10, 2025 03:00 PM' },
+      { id: 'USR-S007', name: 'Carlos Mendoza', email: 'carlos.mendoza@student.vpes.edu.ph', phone: '+63 920 777 8888', role: 'student', status: 'active', lastLogin: 'Jan 09, 2025 10:00 AM' },
+      { id: 'USR-S008', name: 'Isabella Rodriguez', email: 'isabella.rodriguez@student.vpes.edu.ph', phone: '+63 911 888 9999', role: 'student', status: 'active', lastLogin: 'Jan 08, 2025 04:30 PM' },
+      { id: 'USR-S009', name: 'Miguel Torres', email: 'miguel.torres@student.vpes.edu.ph', phone: '+63 918 999 0000', role: 'student', status: 'active', lastLogin: 'Jan 07, 2025 09:30 AM' },
+      { id: 'USR-S010', name: 'Sofia Gonzalez', email: 'sofia.gonzalez@student.vpes.edu.ph', phone: '+63 907 000 1111', role: 'student', status: 'active', lastLogin: 'Jan 06, 2025 11:00 AM' },
+      { id: 'USR-S011', name: 'Diego Martinez', email: 'diego.martinez@student.vpes.edu.ph', phone: '+63 912 123 4567', role: 'student', status: 'active', lastLogin: 'Jan 05, 2025 02:15 PM' },
+      { id: 'USR-S012', name: 'Camila Perez', email: 'camila.perez@student.vpes.edu.ph', phone: '+63 917 234 5678', role: 'student', status: 'active', lastLogin: 'Jan 04, 2025 10:30 AM' },
+      { id: 'USR-S013', name: 'Sebastian Lopez', email: 'sebastian.lopez@student.vpes.edu.ph', phone: '+63 908 345 6789', role: 'student', status: 'active', lastLogin: 'Jan 03, 2025 03:45 PM' },
+      { id: 'USR-S014', name: 'Valentina Herrera', email: 'valentina.herrera@student.vpes.edu.ph', phone: '+63 919 456 7890', role: 'student', status: 'active', lastLogin: 'Jan 02, 2025 09:00 AM' },
+      { id: 'USR-S015', name: 'Mateo Jimenez', email: 'mateo.jimenez@student.vpes.edu.ph', phone: '+63 906 567 8901', role: 'student', status: 'active', lastLogin: 'Jan 01, 2025 11:30 AM' },
+      { id: 'USR-S016', name: 'Emma Morales', email: 'emma.morales@student.vpes.edu.ph', phone: '+63 915 678 9012', role: 'student', status: 'active', lastLogin: 'Dec 31, 2024 02:00 PM' },
+      { id: 'USR-S017', name: 'Leonardo Vargas', email: 'leonardo.vargas@student.vpes.edu.ph', phone: '+63 920 789 0123', role: 'student', status: 'active', lastLogin: 'Dec 30, 2024 10:15 AM' },
+      { id: 'USR-S018', name: 'Mia Castillo', email: 'mia.castillo@student.vpes.edu.ph', phone: '+63 911 890 1234', role: 'student', status: 'active', lastLogin: 'Dec 29, 2024 03:30 PM' },
+      { id: 'USR-S019', name: 'Noah Ramos', email: 'noah.ramos@student.vpes.edu.ph', phone: '+63 918 901 2345', role: 'student', status: 'active', lastLogin: 'Dec 28, 2024 09:45 AM' },
+      { id: 'USR-S020', name: 'Zoe Flores', email: 'zoe.flores@student.vpes.edu.ph', phone: '+63 907 012 3456', role: 'student', status: 'inactive', lastLogin: 'Dec 27, 2024 11:00 AM' },
+      { id: 'USR-S021', name: 'Ethan Silva', email: 'ethan.silva@student.vpes.edu.ph', phone: '+63 912 123 4568', role: 'student', status: 'active', lastLogin: 'Dec 26, 2024 02:30 PM' },
+      { id: 'USR-S022', name: 'Aria Castro', email: 'aria.castro@student.vpes.edu.ph', phone: '+63 917 234 5679', role: 'student', status: 'active', lastLogin: 'Dec 25, 2024 10:00 AM' },
+      { id: 'USR-S023', name: 'Lucas Ortega', email: 'lucas.ortega@student.vpes.edu.ph', phone: '+63 908 345 6780', role: 'student', status: 'active', lastLogin: 'Dec 24, 2024 03:15 PM' },
+      { id: 'USR-S024', name: 'Luna Medina', email: 'luna.medina@student.vpes.edu.ph', phone: '+63 919 456 7891', role: 'student', status: 'active', lastLogin: 'Dec 23, 2024 09:30 AM' },
+      { id: 'USR-S025', name: 'Gael Ruiz', email: 'gael.ruiz@student.vpes.edu.ph', phone: '+63 906 567 8902', role: 'student', status: 'active', lastLogin: 'Dec 22, 2024 11:45 AM' }
     ];
 
     let filteredUsers = [...allUsers];
@@ -1055,7 +1055,7 @@ function closeMobileMenu() {
             <div>${user.email}</div>
             <div style="color: #999; font-size: 12px;">${user.phone}</div>
           </td>
-          <td><span class="role-badge ${user.role}">${user.role === 'parent' ? 'Parent/Guardian' : 'Teacher'}</span></td>
+          <td><span class="role-badge ${user.role}">${user.role === 'student' ? 'Student' : 'Teacher'}</span></td>
           <td>${user.lastLogin}</td>
           <td>
             <div class="action-buttons">
@@ -1104,11 +1104,11 @@ function closeMobileMenu() {
 
     function updateStatsCounts() {
       const teachers = allUsers.filter(u => u.role === 'teacher').length;
-      const parents = allUsers.filter(u => u.role === 'parent').length;
+      const students = allUsers.filter(u => u.role === 'student').length;
       
       document.getElementById('totalUsers').textContent = allUsers.length;
       document.getElementById('teacherCount').textContent = teachers;
-      document.getElementById('parentCount').textContent = parents;
+      document.getElementById('studentCount').textContent = students;
     }
 
     function applyFilters() {

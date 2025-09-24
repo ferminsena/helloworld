@@ -25,8 +25,8 @@
       top: 0;
       width: 70px;
       height: 100vh;
-      background: linear-gradient(180deg, #7dd3fc 0%, #0ea5e9 100%);
-      transition: width 0.3s ease;
+      background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
+      transition: all 0.3s ease;
       z-index: 999;
       overflow: hidden;
     }
@@ -103,6 +103,12 @@
       padding: 30px;
       margin-left: 70px;
       transition: margin-left 0.3s ease;
+      min-height: 100vh;
+    }
+
+    /* When sidebar is hovered, push main content to the right */
+    .sidebar:hover ~ .main-content {
+      margin-left: 250px;
     }
 
     .page-header {

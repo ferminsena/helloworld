@@ -190,6 +190,7 @@
       transform: translateY(-3px);
     }
 
+    .grade-card.grade-k { border-color: #ef4444; }
     .grade-card.grade1 { border-color: #6366f1; }
     .grade-card.grade2 { border-color: #8b5cf6; }
     .grade-card.grade3 { border-color: #ec4899; }
@@ -209,11 +210,6 @@
       margin-bottom: 5px;
     }
 
-    .capacity-info {
-      font-size: 12px;
-      color: #666;
-    }
-
     /* Search and Filter */
     .search-filter {
       background: white;
@@ -225,7 +221,7 @@
 
     .filter-row {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr auto;
+      grid-template-columns: 2fr 1fr 1fr auto;
       gap: 15px;
       align-items: center;
     }
@@ -319,53 +315,6 @@
       color: #999;
     }
 
-    .status-badge {
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .status-badge.enrolled {
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    .status-badge.pending {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .status-badge.inactive {
-      background: #f3f4f6;
-      color: #6b7280;
-    }
-
-    .performance-indicator {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-
-    .performance-bar {
-      width: 60px;
-      height: 6px;
-      background: #e5e7eb;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-
-    .performance-fill {
-      height: 100%;
-      background: #10b981;
-      border-radius: 3px;
-    }
-
-    .performance-text {
-      font-size: 12px;
-      color: #666;
-    }
-
     .action-buttons {
       display: flex;
       gap: 5px;
@@ -397,60 +346,15 @@
       transform: scale(1.2);
     }
 
-    /* Quick Actions */
-    .quick-actions {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      margin-bottom: 25px;
-    }
-
-    .quick-actions-title {
-      font-weight: 600;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .quick-actions-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 10px;
-    }
-
-    .quick-action-btn {
-      padding: 12px;
-      border: 1px solid #e5e7eb;
-      background: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-align: center;
-      font-size: 14px;
-    }
-
-    .quick-action-btn:hover {
-      background: #f8f9fa;
-      border-color: #0ea5e9;
-    }
-
-    .quick-action-btn i {
-      display: block;
-      font-size: 20px;
-      margin-bottom: 5px;
-      color: #0ea5e9;
-    }
-
     /* Pagination */
     .pagination {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       padding: 20px;
       background: white;
       border-top: 1px solid #eee;
+      gap: 20px;
     }
 
     .pagination-info {
@@ -460,7 +364,8 @@
 
     .pagination-controls {
       display: flex;
-      gap: 5px;
+      gap: 15px;
+      align-items: center;
     }
 
     .page-btn {
@@ -481,6 +386,11 @@
       background: #0ea5e9;
       color: white;
       border-color: #0ea5e9;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   </style>
 </head>
@@ -546,69 +456,33 @@
 
     <!-- Grade Level Statistics -->
     <div class="grade-stats">
+      <div class="grade-card grade-k">
+        <div class="grade-level">Kindergarten</div>
+        <div class="student-count" id="kindergarten-count">10</div>
+      </div>
       <div class="grade-card grade1">
         <div class="grade-level">Grade 1</div>
-        <div class="student-count">215</div>
-        <div class="capacity-info">215/250 students</div>
+        <div class="student-count" id="grade1-count">10</div>
       </div>
       <div class="grade-card grade2">
         <div class="grade-level">Grade 2</div>
-        <div class="student-count">208</div>
-        <div class="capacity-info">208/250 students</div>
+        <div class="student-count" id="grade2-count">10</div>
       </div>
       <div class="grade-card grade3">
         <div class="grade-level">Grade 3</div>
-        <div class="student-count">195</div>
-        <div class="capacity-info">195/250 students</div>
+        <div class="student-count" id="grade3-count">10</div>
       </div>
       <div class="grade-card grade4">
         <div class="grade-level">Grade 4</div>
-        <div class="student-count">202</div>
-        <div class="capacity-info">202/250 students</div>
+        <div class="student-count" id="grade4-count">10</div>
       </div>
       <div class="grade-card grade5">
         <div class="grade-level">Grade 5</div>
-        <div class="student-count">188</div>
-        <div class="capacity-info">188/250 students</div>
+        <div class="student-count" id="grade5-count">10</div>
       </div>
       <div class="grade-card grade6">
         <div class="grade-level">Grade 6</div>
-        <div class="student-count">196</div>
-        <div class="capacity-info">196/250 students</div>
-      </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="quick-actions">
-      <h3 class="quick-actions-title">
-        <i class="ri-flashlight-line"></i>
-        Quick Actions
-      </h3>
-      <div class="quick-actions-grid">
-        <button class="quick-action-btn">
-          <i class="ri-user-search-line"></i>
-          Attendance
-        </button>
-        <button class="quick-action-btn">
-          <i class="ri-medal-line"></i>
-          Awards
-        </button>
-        <button class="quick-action-btn">
-          <i class="ri-calendar-check-line"></i>
-          Schedule
-        </button>
-        <button class="quick-action-btn">
-          <i class="ri-parent-line"></i>
-          Parents Info
-        </button>
-        <button class="quick-action-btn">
-          <i class="ri-file-list-3-line"></i>
-          Grades
-        </button>
-        <button class="quick-action-btn">
-          <i class="ri-notification-3-line"></i>
-          Send Notice
-        </button>
+        <div class="student-count" id="grade6-count">10</div>
       </div>
     </div>
 
@@ -616,31 +490,26 @@
     <div class="search-filter">
       <div class="filter-row">
         <div class="search-box">
-          <input type="text" placeholder="Search by student name, ID, or parent name...">
+          <input type="text" id="searchInput" placeholder="Search by student name, ID, or parent name...">
           <i class="ri-search-line"></i>
         </div>
-        <select class="filter-select">
-          <option>All Grades</option>
-          <option>Grade 1</option>
-          <option>Grade 2</option>
-          <option>Grade 3</option>
-          <option>Grade 4</option>
-          <option>Grade 5</option>
-          <option>Grade 6</option>
+        <select class="filter-select" id="gradeFilter">
+          <option value="">All Grades</option>
+          <option value="Kindergarten">Kindergarten</option>
+          <option value="Grade 1">Grade 1</option>
+          <option value="Grade 2">Grade 2</option>
+          <option value="Grade 3">Grade 3</option>
+          <option value="Grade 4">Grade 4</option>
+          <option value="Grade 5">Grade 5</option>
+          <option value="Grade 6">Grade 6</option>
         </select>
-        <select class="filter-select">
-          <option>All Sections</option>
-          <option>Section A</option>
-          <option>Section B</option>
-          <option>Section C</option>
+        <select class="filter-select" id="sectionFilter">
+          <option value="">All Sections</option>
+          <option value="Section A">Section A</option>
+          <option value="Section B">Section B</option>
+          <option value="Section C">Section C</option>
         </select>
-        <select class="filter-select">
-          <option>All Status</option>
-          <option>Enrolled</option>
-          <option>Pending</option>
-          <option>Inactive</option>
-        </select>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" onclick="applyFilters()">
           <i class="ri-filter-3-line"></i> Filter
         </button>
       </div>
@@ -654,276 +523,294 @@
             <th>Student</th>
             <th>Grade & Section</th>
             <th>Parent/Guardian</th>
-            <th>Status</th>
-            <th>Performance</th>
-            <th>Attendance</th>
+            <th>Contact</th>
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>
-              <div class="student-info">
-                <div class="student-photo">JD</div>
-                <div class="student-details">
-                  <h4>Juan Dela Cruz</h4>
-                  <p>ID: STU-2025-001</p>
-                </div>
-              </div>
-            </td>
-            <td>Grade 1 - Section A</td>
-            <td>
-              <div>Maria Dela Cruz</div>
-              <div style="font-size: 12px; color: #999;">Mother</div>
-            </td>
-            <td><span class="status-badge enrolled">Enrolled</span></td>
-            <td>
-              <div class="performance-indicator">
-                <div class="performance-bar">
-                  <div class="performance-fill" style="width: 85%;"></div>
-                </div>
-                <span class="performance-text">85%</span>
-              </div>
-            </td>
-            <td>98%</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View Profile">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn edit" title="Edit">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="action-btn report" title="Generate Report">
-                  <i class="ri-file-chart-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="student-info">
-                <div class="student-photo">MS</div>
-                <div class="student-details">
-                  <h4>Maria Santos</h4>
-                  <p>ID: STU-2025-002</p>
-                </div>
-              </div>
-            </td>
-            <td>Grade 2 - Section B</td>
-            <td>
-              <div>Pedro Santos</div>
-              <div style="font-size: 12px; color: #999;">Father</div>
-            </td>
-            <td><span class="status-badge enrolled">Enrolled</span></td>
-            <td>
-              <div class="performance-indicator">
-                <div class="performance-bar">
-                  <div class="performance-fill" style="width: 92%;"></div>
-                </div>
-                <span class="performance-text">92%</span>
-              </div>
-            </td>
-            <td>100%</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View Profile">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn edit" title="Edit">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="action-btn report" title="Generate Report">
-                  <i class="ri-file-chart-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="student-info">
-                <div class="student-photo">PG</div>
-                <div class="student-details">
-                  <h4>Pedro Garcia Jr.</h4>
-                  <p>ID: STU-2025-003</p>
-                </div>
-              </div>
-            </td>
-            <td>Grade 3 - Section A</td>
-            <td>
-              <div>Pedro Garcia Sr.</div>
-              <div style="font-size: 12px; color: #999;">Father</div>
-            </td>
-            <td><span class="status-badge pending">Pending</span></td>
-            <td>
-              <div class="performance-indicator">
-                <div class="performance-bar">
-                  <div class="performance-fill" style="width: 78%;"></div>
-                </div>
-                <span class="performance-text">78%</span>
-              </div>
-            </td>
-            <td>95%</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View Profile">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn edit" title="Edit">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="action-btn report" title="Generate Report">
-                  <i class="ri-file-chart-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="student-info">
-                <div class="student-photo">AR</div>
-                <div class="student-details">
-                  <h4>Ana Reyes</h4>
-                  <p>ID: STU-2025-004</p>
-                </div>
-              </div>
-            </td>
-            <td>Grade 1 - Section C</td>
-            <td>
-              <div>Rosa Reyes</div>
-              <div style="font-size: 12px; color: #999;">Mother</div>
-            </td>
-            <td><span class="status-badge enrolled">Enrolled</span></td>
-            <td>
-              <div class="performance-indicator">
-                <div class="performance-bar">
-                  <div class="performance-fill" style="width: 88%;"></div>
-                </div>
-                <span class="performance-text">88%</span>
-              </div>
-            </td>
-            <td>97%</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View Profile">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn edit" title="Edit">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="action-btn report" title="Generate Report">
-                  <i class="ri-file-chart-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div class="student-info">
-                <div class="student-photo">JR</div>
-                <div class="student-details">
-                  <h4>Jose Rizal III</h4>
-                  <p>ID: STU-2025-005</p>
-                </div>
-              </div>
-            </td>
-            <td>Grade 4 - Section B</td>
-            <td>
-              <div>Jose Rizal Jr.</div>
-              <div style="font-size: 12px; color: #999;">Father</div>
-            </td>
-            <td><span class="status-badge enrolled">Enrolled</span></td>
-            <td>
-              <div class="performance-indicator">
-                <div class="performance-bar">
-                  <div class="performance-fill" style="width: 95%;"></div>
-                </div>
-                <span class="performance-text">95%</span>
-              </div>
-            </td>
-            <td>99%</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View Profile">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn edit" title="Edit">
-                  <i class="ri-edit-line"></i>
-                </button>
-                <button class="action-btn report" title="Generate Report">
-                  <i class="ri-file-chart-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
+        <tbody id="studentsTable">
+          <!-- Data will be populated by JavaScript -->
         </tbody>
       </table>
       
       <!-- Pagination -->
-      <div class="pagination">
-        <div class="pagination-info">
-          Showing 1-5 of 1,204 students
+      <div class="pagination" id="paginationContainer">
+        <div class="pagination-info" id="paginationInfo">
+          Showing 1-10 of 70 students
         </div>
         <div class="pagination-controls">
-          <button class="page-btn">Previous</button>
-          <button class="page-btn active">1</button>
-          <button class="page-btn">2</button>
-          <button class="page-btn">3</button>
-          <button class="page-btn">...</button>
-          <button class="page-btn">241</button>
-          <button class="page-btn">Next</button>
+          <button class="page-btn" id="prevBtn" onclick="previousPage()">Previous</button>
+          <button class="page-btn" id="nextBtn" onclick="nextPage()">Next</button>
         </div>
       </div>
     </div>
   </main>
 
   <script>
+    // Realistic student data - 10 students per grade level (K-6)
+    const allStudents = [
+      // Kindergarten Students
+      { id: 'STU-K-001', name: 'Ava Marie Santos', grade: 'Kindergarten', section: 'Section A', parent: 'Carmen Santos', relation: 'Mother', phone: '+63 912 111 1001', email: 'carmen.santos@email.com' },
+      { id: 'STU-K-002', name: 'Ethan Cruz', grade: 'Kindergarten', section: 'Section A', parent: 'Robert Cruz', relation: 'Father', phone: '+63 917 111 1002', email: 'robert.cruz@email.com' },
+      { id: 'STU-K-003', name: 'Sophia Garcia', grade: 'Kindergarten', section: 'Section B', parent: 'Lisa Garcia', relation: 'Mother', phone: '+63 908 111 1003', email: 'lisa.garcia@email.com' },
+      { id: 'STU-K-004', name: 'Liam Reyes', grade: 'Kindergarten', section: 'Section B', parent: 'Mark Reyes', relation: 'Father', phone: '+63 919 111 1004', email: 'mark.reyes@email.com' },
+      { id: 'STU-K-005', name: 'Isabella Lopez', grade: 'Kindergarten', section: 'Section A', parent: 'Maria Lopez', relation: 'Mother', phone: '+63 906 111 1005', email: 'maria.lopez@email.com' },
+      { id: 'STU-K-006', name: 'Noah Fernandez', grade: 'Kindergarten', section: 'Section B', parent: 'Jose Fernandez', relation: 'Father', phone: '+63 915 111 1006', email: 'jose.fernandez@email.com' },
+      { id: 'STU-K-007', name: 'Mia Ramirez', grade: 'Kindergarten', section: 'Section A', parent: 'Ana Ramirez', relation: 'Mother', phone: '+63 920 111 1007', email: 'ana.ramirez@email.com' },
+      { id: 'STU-K-008', name: 'Lucas Torres', grade: 'Kindergarten', section: 'Section B', parent: 'Carlos Torres', relation: 'Father', phone: '+63 911 111 1008', email: 'carlos.torres@email.com' },
+      { id: 'STU-K-009', name: 'Emma Morales', grade: 'Kindergarten', section: 'Section A', parent: 'Rosa Morales', relation: 'Mother', phone: '+63 918 111 1009', email: 'rosa.morales@email.com' },
+      { id: 'STU-K-010', name: 'Mason Rivera', grade: 'Kindergarten', section: 'Section B', parent: 'Diego Rivera', relation: 'Father', phone: '+63 907 111 1010', email: 'diego.rivera@email.com' },
+
+      // Grade 1 Students
+      { id: 'STU-1-001', name: 'Juan Dela Cruz', grade: 'Grade 1', section: 'Section A', parent: 'Maria Dela Cruz', relation: 'Mother', phone: '+63 912 345 6789', email: 'maria.delacruz@email.com' },
+      { id: 'STU-1-002', name: 'Ana Reyes', grade: 'Grade 1', section: 'Section C', parent: 'Rosa Reyes', relation: 'Mother', phone: '+63 928 987 6543', email: 'rosa.reyes@email.com' },
+      { id: 'STU-1-003', name: 'Miguel Santos', grade: 'Grade 1', section: 'Section A', parent: 'Pedro Santos', relation: 'Father', phone: '+63 913 222 3333', email: 'pedro.santos@email.com' },
+      { id: 'STU-1-004', name: 'Luz Martinez', grade: 'Grade 1', section: 'Section B', parent: 'Carmen Martinez', relation: 'Mother', phone: '+63 909 333 4444', email: 'carmen.martinez@email.com' },
+      { id: 'STU-1-005', name: 'Carlos Hernandez', grade: 'Grade 1', section: 'Section C', parent: 'Luis Hernandez', relation: 'Father', phone: '+63 917 444 5555', email: 'luis.hernandez@email.com' },
+      { id: 'STU-1-006', name: 'Sofia Gonzalez', grade: 'Grade 1', section: 'Section A', parent: 'Elena Gonzalez', relation: 'Mother', phone: '+63 905 555 6666', email: 'elena.gonzalez@email.com' },
+      { id: 'STU-1-007', name: 'Diego Castillo', grade: 'Grade 1', section: 'Section B', parent: 'Antonio Castillo', relation: 'Father', phone: '+63 921 666 7777', email: 'antonio.castillo@email.com' },
+      { id: 'STU-1-008', name: 'Valentina Ramos', grade: 'Grade 1', section: 'Section C', parent: 'Isabel Ramos', relation: 'Mother', phone: '+63 916 777 8888', email: 'isabel.ramos@email.com' },
+      { id: 'STU-1-009', name: 'Sebastian Flores', grade: 'Grade 1', section: 'Section A', parent: 'Manuel Flores', relation: 'Father', phone: '+63 910 888 9999', email: 'manuel.flores@email.com' },
+      { id: 'STU-1-010', name: 'Camila Vargas', grade: 'Grade 1', section: 'Section B', parent: 'Patricia Vargas', relation: 'Mother', phone: '+63 922 999 0000', email: 'patricia.vargas@email.com' },
+
+      // Grade 2 Students
+      { id: 'STU-2-001', name: 'Maria Santos', grade: 'Grade 2', section: 'Section B', parent: 'Pedro Santos', relation: 'Father', phone: '+63 998 765 4321', email: 'pedro.santos@email.com' },
+      { id: 'STU-2-002', name: 'Gabriel Mendoza', grade: 'Grade 2', section: 'Section A', parent: 'Lucia Mendoza', relation: 'Mother', phone: '+63 914 123 4567', email: 'lucia.mendoza@email.com' },
+      { id: 'STU-2-003', name: 'Isabella Cruz', grade: 'Grade 2', section: 'Section C', parent: 'Fernando Cruz', relation: 'Father', phone: '+63 923 234 5678', email: 'fernando.cruz@email.com' },
+      { id: 'STU-2-004', name: 'Leonardo Jimenez', grade: 'Grade 2', section: 'Section B', parent: 'Sandra Jimenez', relation: 'Mother', phone: '+63 908 345 6789', email: 'sandra.jimenez@email.com' },
+      { id: 'STU-2-005', name: 'Victoria Herrera', grade: 'Grade 2', section: 'Section A', parent: 'Ricardo Herrera', relation: 'Father', phone: '+63 912 456 7890', email: 'ricardo.herrera@email.com' },
+      { id: 'STU-2-006', name: 'Adrian Moreno', grade: 'Grade 2', section: 'Section C', parent: 'Beatriz Moreno', relation: 'Mother', phone: '+63 917 567 8901', email: 'beatriz.moreno@email.com' },
+      { id: 'STU-2-007', name: 'Natalia Silva', grade: 'Grade 2', section: 'Section B', parent: 'Javier Silva', relation: 'Father', phone: '+63 920 678 9012', email: 'javier.silva@email.com' },
+      { id: 'STU-2-008', name: 'Emilio Castro', grade: 'Grade 2', section: 'Section A', parent: 'Gloria Castro', relation: 'Mother', phone: '+63 915 789 0123', email: 'gloria.castro@email.com' },
+      { id: 'STU-2-009', name: 'Daniela Ortega', grade: 'Grade 2', section: 'Section C', parent: 'Raul Ortega', relation: 'Father', phone: '+63 911 890 1234', email: 'raul.ortega@email.com' },
+      { id: 'STU-2-010', name: 'Matias Ruiz', grade: 'Grade 2', section: 'Section B', parent: 'Veronica Ruiz', relation: 'Mother', phone: '+63 918 901 2345', email: 'veronica.ruiz@email.com' },
+
+      // Grade 3 Students
+      { id: 'STU-3-001', name: 'Pedro Garcia Jr.', grade: 'Grade 3', section: 'Section A', parent: 'Pedro Garcia Sr.', relation: 'Father', phone: '+63 917 123 4567', email: 'pedro.garcia@email.com' },
+      { id: 'STU-3-002', name: 'Lucia Medina', grade: 'Grade 3', section: 'Section B', parent: 'Angela Medina', relation: 'Mother', phone: '+63 919 234 5678', email: 'angela.medina@email.com' },
+      { id: 'STU-3-003', name: 'Andres Peña', grade: 'Grade 3', section: 'Section C', parent: 'Jorge Peña', relation: 'Father', phone: '+63 906 345 6789', email: 'jorge.pena@email.com' },
+      { id: 'STU-3-004', name: 'Valeria Guerrero', grade: 'Grade 3', section: 'Section A', parent: 'Monica Guerrero', relation: 'Mother', phone: '+63 924 456 7890', email: 'monica.guerrero@email.com' },
+      { id: 'STU-3-005', name: 'Samuel Aguilar', grade: 'Grade 3', section: 'Section B', parent: 'Enrique Aguilar', relation: 'Father', phone: '+63 913 567 8901', email: 'enrique.aguilar@email.com' },
+      { id: 'STU-3-006', name: 'Martina Vega', grade: 'Grade 3', section: 'Section C', parent: 'Claudia Vega', relation: 'Mother', phone: '+63 925 678 9012', email: 'claudia.vega@email.com' },
+      { id: 'STU-3-007', name: 'Nicolas Romero', grade: 'Grade 3', section: 'Section A', parent: 'Alejandro Romero', relation: 'Father', phone: '+63 909 789 0123', email: 'alejandro.romero@email.com' },
+      { id: 'STU-3-008', name: 'Renata Delgado', grade: 'Grade 3', section: 'Section B', parent: 'Pilar Delgado', relation: 'Mother', phone: '+63 926 890 1234', email: 'pilar.delgado@email.com' },
+      { id: 'STU-3-009', name: 'Joaquin Navarro', grade: 'Grade 3', section: 'Section C', parent: 'Cesar Navarro', relation: 'Father', phone: '+63 914 901 2345', email: 'cesar.navarro@email.com' },
+      { id: 'STU-3-010', name: 'Esperanza Campos', grade: 'Grade 3', section: 'Section A', parent: 'Diana Campos', relation: 'Mother', phone: '+63 927 012 3456', email: 'diana.campos@email.com' },
+
+      // Grade 4 Students
+      { id: 'STU-4-001', name: 'Jose Rizal III', grade: 'Grade 4', section: 'Section B', parent: 'Jose Rizal Jr.', relation: 'Father', phone: '+63 935 456 7890', email: 'jose.rizal@email.com' },
+      { id: 'STU-4-002', name: 'Carmen Salazar', grade: 'Grade 4', section: 'Section A', parent: 'Teresa Salazar', relation: 'Mother', phone: '+63 928 567 8901', email: 'teresa.salazar@email.com' },
+      { id: 'STU-4-003', name: 'Francisco Molina', grade: 'Grade 4', section: 'Section C', parent: 'Eduardo Molina', relation: 'Father', phone: '+63 921 678 9012', email: 'eduardo.molina@email.com' },
+      { id: 'STU-4-004', name: 'Esperanza Luna', grade: 'Grade 4', section: 'Section B', parent: 'Soledad Luna', relation: 'Mother', phone: '+63 916 789 0123', email: 'soledad.luna@email.com' },
+      { id: 'STU-4-005', name: 'Ricardo Sandoval', grade: 'Grade 4', section: 'Section A', parent: 'Alberto Sandoval', relation: 'Father', phone: '+63 929 890 1234', email: 'alberto.sandoval@email.com' },
+      { id: 'STU-4-006', name: 'Alejandra Herrera', grade: 'Grade 4', section: 'Section C', parent: 'Margarita Herrera', relation: 'Mother', phone: '+63 922 901 2345', email: 'margarita.herrera@email.com' },
+      { id: 'STU-4-007', name: 'Mateo Espinoza', grade: 'Grade 4', section: 'Section B', parent: 'Hector Espinoza', relation: 'Father', phone: '+63 915 012 3456', email: 'hector.espinoza@email.com' },
+      { id: 'STU-4-008', name: 'Regina Cortez', grade: 'Grade 4', section: 'Section A', parent: 'Dolores Cortez', relation: 'Mother', phone: '+63 930 123 4567', email: 'dolores.cortez@email.com' },
+      { id: 'STU-4-009', name: 'Emiliano Ponce', grade: 'Grade 4', section: 'Section C', parent: 'Victor Ponce', relation: 'Father', phone: '+63 923 234 5678', email: 'victor.ponce@email.com' },
+      { id: 'STU-4-010', name: 'Paloma Santana', grade: 'Grade 4', section: 'Section B', parent: 'Amparo Santana', relation: 'Mother', phone: '+63 917 345 6789', email: 'amparo.santana@email.com' },
+
+      // Grade 5 Students
+      { id: 'STU-5-001', name: 'Santiago Morales', grade: 'Grade 5', section: 'Section A', parent: 'Felipe Morales', relation: 'Father', phone: '+63 931 456 7890', email: 'felipe.morales@email.com' },
+      { id: 'STU-5-002', name: 'Catalina Ibarra', grade: 'Grade 5', section: 'Section B', parent: 'Remedios Ibarra', relation: 'Mother', phone: '+63 924 567 8901', email: 'remedios.ibarra@email.com' },
+      { id: 'STU-5-003', name: 'Rodrigo Valdez', grade: 'Grade 5', section: 'Section C', parent: 'Gerardo Valdez', relation: 'Father', phone: '+63 918 678 9012', email: 'gerardo.valdez@email.com' },
+      { id: 'STU-5-004', name: 'Estrella Pacheco', grade: 'Grade 5', section: 'Section A', parent: 'Consuelo Pacheco', relation: 'Mother', phone: '+63 932 789 0123', email: 'consuelo.pacheco@email.com' },
+      { id: 'STU-5-005', name: 'Guillermo Acosta', grade: 'Grade 5', section: 'Section B', parent: 'Armando Acosta', relation: 'Father', phone: '+63 925 890 1234', email: 'armando.acosta@email.com' },
+      { id: 'STU-5-006', name: 'Esperanza Montes', grade: 'Grade 5', section: 'Section C', parent: 'Concepcion Montes', relation: 'Mother', phone: '+63 919 901 2345', email: 'concepcion.montes@email.com' },
+      { id: 'STU-5-007', name: 'Esteban Galindo', grade: 'Grade 5', section: 'Section A', parent: 'Salvador Galindo', relation: 'Father', phone: '+63 933 012 3456', email: 'salvador.galindo@email.com' },
+      { id: 'STU-5-008', name: 'Milagros Santos', grade: 'Grade 5', section: 'Section B', parent: 'Esperanza Santos', relation: 'Mother', phone: '+63 926 123 4567', email: 'esperanza.santos@email.com' },
+      { id: 'STU-5-009', name: 'Aurelio Campos', grade: 'Grade 5', section: 'Section C', parent: 'Maximiliano Campos', relation: 'Father', phone: '+63 920 234 5678', email: 'maximiliano.campos@email.com' },
+      { id: 'STU-5-010', name: 'Soledad Rivera', grade: 'Grade 5', section: 'Section A', parent: 'Mercedes Rivera', relation: 'Mother', phone: '+63 934 345 6789', email: 'mercedes.rivera@email.com' },
+
+      // Grade 6 Students
+      { id: 'STU-6-001', name: 'Alejandro Torres', grade: 'Grade 6', section: 'Section A', parent: 'Domingo Torres', relation: 'Father', phone: '+63 927 456 7890', email: 'domingo.torres@email.com' },
+      { id: 'STU-6-002', name: 'Marisol Fuentes', grade: 'Grade 6', section: 'Section B', parent: 'Amparo Fuentes', relation: 'Mother', phone: '+63 935 567 8901', email: 'amparo.fuentes@email.com' },
+      { id: 'STU-6-003', name: 'Cristian Paredes', grade: 'Grade 6', section: 'Section C', parent: 'Evaristo Paredes', relation: 'Father', phone: '+63 928 678 9012', email: 'evaristo.paredes@email.com' },
+      { id: 'STU-6-004', name: 'Rosario Lozano', grade: 'Grade 6', section: 'Section A', parent: 'Guadalupe Lozano', relation: 'Mother', phone: '+63 936 789 0123', email: 'guadalupe.lozano@email.com' },
+      { id: 'STU-6-005', name: 'Patricio Guerrero', grade: 'Grade 6', section: 'Section B', parent: 'Leopoldo Guerrero', relation: 'Father', phone: '+63 929 890 1234', email: 'leopoldo.guerrero@email.com' },
+      { id: 'STU-6-006', name: 'Encarnacion Silva', grade: 'Grade 6', section: 'Section C', parent: 'Remedios Silva', relation: 'Mother', phone: '+63 937 901 2345', email: 'remedios.silva@email.com' },
+      { id: 'STU-6-007', name: 'Victoriano Mendez', grade: 'Grade 6', section: 'Section A', parent: 'Teodoro Mendez', relation: 'Father', phone: '+63 921 012 3456', email: 'teodoro.mendez@email.com' },
+      { id: 'STU-6-008', name: 'Trinidad Bautista', grade: 'Grade 6', section: 'Section B', parent: 'Asuncion Bautista', relation: 'Mother', phone: '+63 938 123 4567', email: 'asuncion.bautista@email.com' },
+      { id: 'STU-6-009', name: 'Florencio Moreno', grade: 'Grade 6', section: 'Section C', parent: 'Bartolome Moreno', relation: 'Father', phone: '+63 922 234 5678', email: 'bartolome.moreno@email.com' },
+      { id: 'STU-6-010', name: 'Purificacion Ramos', grade: 'Grade 6', section: 'Section A', parent: 'Concepcion Ramos', relation: 'Mother', phone: '+63 939 345 6789', email: 'concepcion.ramos@email.com' }
+    ];
+
+    let filteredStudents = [...allStudents];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function renderTable() {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageData = filteredStudents.slice(startIndex, endIndex);
+      
+      const tableBody = document.getElementById('studentsTable');
+      tableBody.innerHTML = '';
+      
+      pageData.forEach(student => {
+        const initials = student.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>
+            <div class="student-info">
+              <div class="student-photo">${initials.substring(0, 2)}</div>
+              <div class="student-details">
+                <h4>${student.name}</h4>
+                <p>ID: ${student.id}</p>
+              </div>
+            </div>
+          </td>
+          <td>${student.grade} - ${student.section}</td>
+          <td>
+            <div>${student.parent}</div>
+            <div style="font-size: 12px; color: #999;">${student.relation}</div>
+          </td>
+          <td>
+            <div>${student.phone}</div>
+            <div style="font-size: 12px; color: #999;">${student.email}</div>
+          </td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn view" title="View Profile" onclick="viewStudent('${student.id}')">
+                <i class="ri-eye-line"></i>
+              </button>
+              <button class="action-btn edit" title="Edit" onclick="editStudent('${student.id}')">
+                <i class="ri-edit-line"></i>
+              </button>
+              <button class="action-btn report" title="Generate Report" onclick="generateReport('${student.id}')">
+                <i class="ri-file-chart-line"></i>
+              </button>
+            </div>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+      
+      updatePagination();
+      updateGradeCounts();
+    }
+
+    function updatePagination() {
+      const totalItems = filteredStudents.length;
+      const totalPages = Math.ceil(totalItems / itemsPerPage);
+      const paginationInfo = document.getElementById('paginationInfo');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      
+      const startItem = totalItems > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
+      const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+      
+      paginationInfo.textContent = `Showing ${startItem}-${endItem} of ${totalItems} students`;
+      
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages || totalItems === 0;
+    }
+
+    function updateGradeCounts() {
+      const gradeCounts = {
+        'Kindergarten': 0,
+        'Grade 1': 0,
+        'Grade 2': 0,
+        'Grade 3': 0,
+        'Grade 4': 0,
+        'Grade 5': 0,
+        'Grade 6': 0
+      };
+      
+      allStudents.forEach(student => {
+        gradeCounts[student.grade]++;
+      });
+      
+      document.getElementById('kindergarten-count').textContent = gradeCounts['Kindergarten'];
+      document.getElementById('grade1-count').textContent = gradeCounts['Grade 1'];
+      document.getElementById('grade2-count').textContent = gradeCounts['Grade 2'];
+      document.getElementById('grade3-count').textContent = gradeCounts['Grade 3'];
+      document.getElementById('grade4-count').textContent = gradeCounts['Grade 4'];
+      document.getElementById('grade5-count').textContent = gradeCounts['Grade 5'];
+      document.getElementById('grade6-count').textContent = gradeCounts['Grade 6'];
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const gradeFilter = document.getElementById('gradeFilter').value;
+      const sectionFilter = document.getElementById('sectionFilter').value;
+      
+      filteredStudents = allStudents.filter(student => {
+        const matchesSearch = searchTerm === '' || 
+                             student.id.toLowerCase().includes(searchTerm) || 
+                             student.name.toLowerCase().includes(searchTerm) ||
+                             student.parent.toLowerCase().includes(searchTerm);
+        
+        const matchesGrade = gradeFilter === '' || student.grade === gradeFilter;
+        const matchesSection = sectionFilter === '' || student.section === sectionFilter;
+        
+        return matchesSearch && matchesGrade && matchesSection;
+      });
+      
+      currentPage = 1;
+      renderTable();
+    }
+
+    function previousPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+      }
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+      }
+    }
+
+    function goToPage(page) {
+      const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
+      if (page >= 1 && page <= totalPages) {
+        currentPage = page;
+        renderTable();
+      }
+    }
+
+    function viewStudent(id) {
+      const student = allStudents.find(s => s.id === id);
+      alert(`Viewing profile of ${student.name}...`);
+    }
+
+    function editStudent(id) {
+      const student = allStudents.find(s => s.id === id);
+      alert(`Editing ${student.name}'s information...`);
+    }
+
+    function generateReport(id) {
+      const student = allStudents.find(s => s.id === id);
+      alert(`Generating report for ${student.name}...`);
+    }
+
     function logout() {
       if(confirm('Are you sure you want to logout?')) {
         alert('Logging out...');
       }
     }
 
-    // Grade cards
+    // Grade cards click functionality
     document.querySelectorAll('.grade-card').forEach(card => {
       card.addEventListener('click', function() {
-        const grade = this.querySelector('.grade-level').textContent;
-        alert(`Showing students for ${grade}`);
+        const gradeText = this.querySelector('.grade-level').textContent;
+        document.getElementById('gradeFilter').value = gradeText;
+        applyFilters();
       });
     });
 
-    // Quick action buttons
-    document.querySelectorAll('.quick-action-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        const action = this.textContent.trim();
-        alert(`Opening ${action}...`);
-      });
-    });
+    // Real-time search
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('gradeFilter').addEventListener('change', applyFilters);
+    document.getElementById('sectionFilter').addEventListener('change', applyFilters);
 
-    // Action buttons
-    document.querySelectorAll('.action-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const action = this.classList[1];
-        const row = this.closest('tr');
-        const studentName = row.querySelector('.student-details h4').textContent;
-        
-        if(action === 'view') {
-          alert(`Viewing profile of ${studentName}...`);
-        } else if(action === 'edit') {
-          alert(`Editing ${studentName}'s information...`);
-        } else if(action === 'report') {
-          alert(`Generating report for ${studentName}...`);
-        }
-      });
-    });
-
-    // Filter functionality
-    document.querySelectorAll('.filter-select').forEach(select => {
-      select.addEventListener('change', function() {
-        alert(`Filtering by ${this.value}`);
-      });
-    });
+    // Initial render
+    renderTable();
   </script>
 </body>
 </html>

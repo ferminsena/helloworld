@@ -16,6 +16,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f6fa;
       color: #333;
+      overflow-x: hidden;
     }
 
     /* Sidebar */
@@ -98,6 +99,34 @@
       opacity: 1;
     }
 
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: #0985be;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+    }
+
     /* Main Content */
     .main-content {
       padding: 30px;
@@ -116,6 +145,8 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
     }
 
     .page-title {
@@ -135,6 +166,7 @@
     .header-actions {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -147,6 +179,8 @@
       align-items: center;
       gap: 8px;
       transition: all 0.3s ease;
+      white-space: nowrap;
+      font-size: 14px;
     }
 
     .btn-primary {
@@ -260,11 +294,14 @@
       border-radius: 12px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 700px;
     }
 
     .table th {
@@ -275,6 +312,7 @@
       color: #666;
       font-size: 14px;
       border-bottom: 2px solid #dee2e6;
+      white-space: nowrap;
     }
 
     .table td {
@@ -303,21 +341,33 @@
       font-weight: bold;
       color: #666;
       font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .student-details {
+      min-width: 0;
     }
 
     .student-details h4 {
       font-size: 14px;
       margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .student-details p {
       font-size: 12px;
       color: #999;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .action-buttons {
       display: flex;
       gap: 5px;
+      flex-wrap: nowrap;
     }
 
     .action-btn {
@@ -328,6 +378,7 @@
       font-size: 16px;
       transition: all 0.3s ease;
       background: none;
+      flex-shrink: 0;
     }
 
     .action-btn.view {
@@ -355,6 +406,7 @@
       background: white;
       border-top: 1px solid #eee;
       gap: 20px;
+      flex-wrap: wrap;
     }
 
     .pagination-info {
@@ -376,6 +428,7 @@
       cursor: pointer;
       font-size: 14px;
       transition: all 0.3s ease;
+      white-space: nowrap;
     }
 
     .page-btn:hover {
@@ -392,11 +445,323 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+
+    /* Responsive Breakpoints */
+
+    /* Large tablets and small desktops */
+    @media (max-width: 1024px) {
+      .grade-stats {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+      }
+      
+      .page-title {
+        font-size: 20px;
+      }
+      
+      .page-title i {
+        font-size: 24px;
+      }
+      
+      .filter-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      
+      .search-box {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* Tablets */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+      
+      .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+      }
+      
+      .sidebar.show {
+        transform: translateX(0);
+      }
+      
+      .sidebar:hover {
+        width: 250px;
+      }
+      
+      .mobile-overlay.show {
+        display: block;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 80px 20px 20px 20px;
+      }
+      
+      .sidebar:hover ~ .main-content,
+      .sidebar.show ~ .main-content {
+        margin-left: 0;
+      }
+      
+      /* Show menu text when sidebar is open on mobile */
+      .sidebar.show .menu-item .text {
+        opacity: 1;
+      }
+      
+      .sidebar.show .logo-text {
+        opacity: 1;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .header-actions {
+        width: 100%;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .grade-stats {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+      }
+      
+      .grade-card {
+        padding: 15px;
+      }
+      
+      .grade-level {
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+      
+      .student-count {
+        font-size: 24px;
+      }
+      
+      .search-filter {
+        padding: 15px;
+      }
+      
+      .filter-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .table {
+        min-width: 600px;
+      }
+      
+      .table th, .table td {
+        padding: 12px 8px;
+        font-size: 13px;
+      }
+      
+      .student-photo {
+        width: 35px;
+        height: 35px;
+        font-size: 12px;
+      }
+      
+      .student-details h4 {
+        font-size: 13px;
+      }
+      
+      .student-details p {
+        font-size: 11px;
+      }
+      
+      .action-btn {
+        font-size: 14px;
+        padding: 5px 8px;
+      }
+      
+      .pagination {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .pagination-info {
+        order: 2;
+      }
+      
+      .pagination-controls {
+        order: 1;
+      }
+    }
+
+    /* Mobile phones */
+    @media (max-width: 480px) {
+      .main-content {
+        padding: 80px 15px 15px 15px;
+      }
+      
+      .page-title {
+        font-size: 18px;
+      }
+      
+      .page-title i {
+        font-size: 20px;
+      }
+      
+      .grade-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      
+      .grade-card {
+        padding: 12px;
+      }
+      
+      .grade-level {
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+      
+      .student-count {
+        font-size: 20px;
+      }
+      
+      .search-filter {
+        padding: 12px;
+      }
+      
+      .btn {
+        padding: 8px 16px;
+        font-size: 13px;
+      }
+      
+      .table {
+        min-width: 550px;
+      }
+      
+      .table th, .table td {
+        padding: 10px 6px;
+        font-size: 12px;
+      }
+      
+      .student-photo {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+      }
+      
+      .student-details h4 {
+        font-size: 12px;
+      }
+      
+      .student-details p {
+        font-size: 10px;
+      }
+      
+      .action-btn {
+        font-size: 12px;
+        padding: 4px 6px;
+      }
+      
+      .page-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+      
+      .pagination-info {
+        font-size: 12px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 360px) {
+      .main-content {
+        padding: 80px 10px 10px 10px;
+      }
+      
+      .grade-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .search-filter {
+        padding: 10px;
+      }
+      
+      .table {
+        min-width: 500px;
+      }
+      
+      .btn {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Landscape orientation on mobile */
+    @media (max-height: 500px) and (max-width: 768px) {
+      .grade-stats {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      
+      .grade-card {
+        padding: 10px;
+      }
+      
+      .grade-level {
+        font-size: 11px;
+        margin-bottom: 5px;
+      }
+      
+      .student-count {
+        font-size: 18px;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .sidebar,
+      .mobile-menu-toggle,
+      .mobile-overlay,
+      .search-filter,
+      .header-actions,
+      .action-buttons,
+      .pagination-controls {
+        display: none !important;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 0;
+      }
+      
+      .students-table {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+      
+      .grade-stats {
+        page-break-after: always;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+    <i class="ri-menu-line"></i>
+  </button>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" onclick="closeMobileMenu()"></div>
+
   <!-- Sidebar -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <div class="logo-text">ADMIN MENU</div>
     </div>
@@ -637,6 +1002,39 @@
     let currentPage = 1;
     const itemsPerPage = 10;
 
+    // Mobile menu functions
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+
+      sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
+
+      // Change hamburger to X
+      if (sidebar.classList.contains('show')) {
+        toggleBtn.classList.remove('ri-menu-line');
+        toggleBtn.classList.add('ri-close-line');
+        document.querySelector('.mobile-menu-toggle').classList.add('active');
+      } else {
+        toggleBtn.classList.remove('ri-close-line');
+        toggleBtn.classList.add('ri-menu-line');
+        document.querySelector('.mobile-menu-toggle').classList.remove('active');
+      }
+    }
+
+    function closeMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+
+      sidebar.classList.remove('show');
+      overlay.classList.remove('show');
+      toggleBtn.classList.remove('ri-close-line');
+      toggleBtn.classList.add('ri-menu-line');
+      document.querySelector('.mobile-menu-toggle').classList.remove('active');
+    }
+
     function renderTable() {
       const startIndex = (currentPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
@@ -808,6 +1206,22 @@
     document.getElementById('searchInput').addEventListener('input', applyFilters);
     document.getElementById('gradeFilter').addEventListener('change', applyFilters);
     document.getElementById('sectionFilter').addEventListener('change', applyFilters);
+
+    // Close mobile menu when clicking on menu items
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
+    });
 
     // Initial render
     renderTable();

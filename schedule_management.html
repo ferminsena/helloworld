@@ -317,7 +317,7 @@
   .table th {
     background: #f8f9fa;
     padding: 15px;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
     color: #666;
     font-size: 14px;
@@ -326,6 +326,7 @@
   }
 
   .table td {
+    text-align: center;
     padding: 15px;
     border-bottom: 1px solid #eee;
   }
@@ -356,14 +357,24 @@
   }
 
   .subject-badge {
-    display: inline-block;
-    padding: 6px 12px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-  }
+  display: flex;
+  justify-content: center;  /* center horizontally */
+  align-items: center;      /* center vertically */
+  text-align: center;       /* center multi-line text */
+  width: 100px;             /* fixed width */
+  height: 40px;             /* fixed height */
+  padding: 6px;             /* small padding inside */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  word-wrap: break-word;    /* break long words */
+  overflow-wrap: break-word;
+}
+
+
+
 
   .action-btns {
     display: flex;
@@ -1077,7 +1088,7 @@
         id: 1,
         grade: 'Grade 1',
         section: 'Section A',
-        subject: 'Mathematics',
+        subject: 'Edukasyon sa Pagpapakatao',
         teacher: 'Mr. Juan Santos',
         days: ['Monday', 'Wednesday', 'Friday'],
         startTime: '08:00',
@@ -1123,7 +1134,7 @@
       {
         id: 1,
         teacher: 'Mr. Juan Santos',
-        subject: 'Mathematics',
+        subject: 'Edukasyon sa Pagpapakatao',
         grade: 'Grade 1',
         section: 'Section A',
         days: ['Monday', 'Wednesday', 'Friday'],

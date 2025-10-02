@@ -20,84 +20,84 @@
     }
 
     /* Sidebar */
-    .sidebar {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 70px;
-      height: 100vh;
-      background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
-      transition: all 0.3s ease;
-      z-index: 999;
-      overflow: hidden;
-    }
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 70px;
+    height: 100vh;
+    background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
+    transition: all 0.3s ease;
+    z-index: 999;
+    overflow: hidden;
+  }
 
-    .sidebar:hover {
-      width: 250px;
-    }
+  .sidebar:hover {
+    width: 250px;
+  }
 
-    .sidebar-logo {
-      padding: 20px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-    }
+  .sidebar-logo {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
 
-    .logo-text {
-      color: #fde047;
-      font-weight: bold;
-      font-size: 18px;
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+  .logo-text {
+    color: #fde047;
+    font-weight: bold;
+    font-size: 18px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-    .sidebar:hover .logo-text {
-      opacity: 1;
-    }
+  .sidebar:hover .logo-text {
+    opacity: 1;
+  }
 
-    .sidebar-menu {
-      padding-top: 20px;
-    }
+  .sidebar-menu {
+    padding-top: 20px;
+  }
 
-    .menu-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 15px 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      color: white;
-      text-decoration: none;
-      position: relative;
-      white-space: nowrap;
-    }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+    text-decoration: none;
+    position: relative;
+    white-space: nowrap;
+  }
 
-    .menu-item:hover {
-      background: rgba(255,255,255,0.1);
-    }
+  .menu-item:hover {
+    background: rgba(255,255,255,0.1);
+  }
 
-    .menu-item.active {
-      background: #3b82f6;
-    }
+  .menu-item.active {
+    background: #3b82f6;
+  }
 
-    .menu-item .icon {
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 20px;
-    }
+  .menu-item .icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 20px;
+  }
 
-    .menu-item .text {
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
+  .menu-item .text {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
-    .sidebar:hover .menu-item .text {
-      opacity: 1;
-    }
+  .sidebar:hover .menu-item .text {
+    opacity: 1;
+  }
 
     /* Mobile Menu Toggle */
 .mobile-menu-toggle {
@@ -114,12 +114,6 @@
   cursor: pointer;
   font-size: 20px;
   transition: all 0.3s ease;
-}
-
-/* Icon rotation when active */
-.mobile-menu-toggle.active i {
-  content: "\eb99"; /* ri-close-line (X icon from Remix) */
-  font-family: "remixicon";
 }
 
 
@@ -789,7 +783,7 @@
         <div class="icon"><i class="ri-dashboard-line"></i></div>
         <div class="text">Dashboard</div>
       </a>
-      <a href="applications.html" class="menu-item">
+      <a href="applications.html" class="menu-item active">
         <div class="icon"><i class="ri-article-line"></i></div>
         <div class="text">Applications</div>
       </a>

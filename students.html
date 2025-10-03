@@ -548,6 +548,11 @@
       .mobile-overlay.show {
         display: block;
       }
+
+      .sidebar:hover ~ .main-content,
+      .sidebar.show ~ .main-content {
+        margin-left: 0;
+      }
       
       .main-content {
         margin-left: 0;

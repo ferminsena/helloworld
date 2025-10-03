@@ -584,7 +584,11 @@
       .mobile-overlay.show {
         display: block;
       }
-      
+
+      .sidebar:hover ~ .main-content,
+      .sidebar.show ~ .main-content {
+        margin-left: 0;
+      }
       .main-content {
         margin-left: 0;
         padding: 80px 20px 20px 20px;

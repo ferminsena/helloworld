@@ -16,87 +16,116 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f5f6fa;
       color: #333;
+      overflow-x: hidden;
     }
 
     /* Sidebar */
-  .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 70px;
-    height: 100vh;
-    background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
-    transition: all 0.3s ease;
-    z-index: 999;
-    overflow: hidden;
-  }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
+      transition: all 0.3s ease;
+      z-index: 999;
+      overflow: hidden;
+    }
 
-  .sidebar:hover {
-    width: 250px;
-  }
+    .sidebar:hover {
+      width: 250px;
+    }
 
-  .sidebar-logo {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: all 0.3s ease;
+    }
 
-  .logo-text {
-    color: #fde047;
-    font-weight: bold;
-    font-size: 18px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+    .sidebar:not(:hover) .sidebar-logo {
+      justify-content: flex-start;
+      padding: 20px 15px;
+    }
 
-  .sidebar:hover .logo-text {
-    opacity: 1;
-  }
+    .sidebar:hover .sidebar-logo {
+      justify-content: flex-start;
+      padding: 20px;
+    }
 
-  .sidebar-menu {
-    padding-top: 20px;
-  }
+    .logo-img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      flex-shrink: 0;
+      display: block;
+      opacity: 1;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
 
-  .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
-    text-decoration: none;
-    position: relative;
-    white-space: nowrap;
-  }
+    .sidebar:not(:hover) .logo-img {
+      opacity: 1;
+      display: block;
+    }
 
-  .menu-item:hover {
-    background: rgba(255,255,255,0.1);
-  }
+    .logo-text {
+      color: #fde047;
+      font-weight: bold;
+      font-size: 18px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-  .menu-item.active {
-    background: #3b82f6;
-  }
+    .sidebar:hover .logo-text {
+      opacity: 1;
+    }
 
-  .menu-item .icon {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 20px;
-  }
+    .sidebar-menu {
+      padding-top: 20px;
+    }
 
-  .menu-item .text {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+      position: relative;
+      white-space: nowrap;
+    }
 
-  .sidebar:hover .menu-item .text {
-    opacity: 1;
-  }
+    .menu-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    .menu-item.active {
+      background: #3b82f6;
+    }
+
+    .menu-item .icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .menu-item .text {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .menu-item .text {
+      opacity: 1;
+    }
 
     /* Main Content */
     .main-content {
@@ -106,7 +135,6 @@
       min-height: 100vh;
     }
 
-    /* When sidebar is hovered, push main content to the right */
     .sidebar:hover ~ .main-content {
       margin-left: 250px;
     }
@@ -435,6 +463,11 @@
       color: #333;
     }
 
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
     .table {
       width: 100%;
       border-collapse: collapse;
@@ -511,12 +544,335 @@
     .action-btn:hover {
       transform: scale(1.2);
     }
+
+    /* Mobile Menu Toggle */
+    .mobile-menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: #0985be;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .mobile-menu-toggle.active i {
+      content: "\eb99";
+      font-family: "remixicon";
+    }
+
+    .mobile-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+    }
+
+    /* Responsive Breakpoints */
+    
+    /* Large tablets and small desktops */
+    @media (max-width: 1024px) {
+      .stats-overview {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+      }
+      
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .report-types {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+    }
+
+    /* Tablets */
+    @media (max-width: 768px) {
+      .mobile-menu-toggle {
+        display: block;
+      }
+      
+      .sidebar {
+        transform: translateX(-100%);
+        width: 250px;
+      }
+      
+      .sidebar.show {
+        transform: translateX(0);
+      }
+      
+      .sidebar:hover {
+        width: 250px;
+      }
+
+      .sidebar-logo {
+        justify-content: flex-start;
+        padding: 20px 15px;
+      }
+      
+      .logo-img {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .sidebar .logo-text {
+        opacity: 0;
+      }
+      
+      .sidebar.show .logo-text {
+        opacity: 1;
+      }
+      
+      .sidebar.show .menu-item .text {
+        opacity: 1;
+      }
+      
+      .mobile-overlay.show {
+        display: block;
+      }
+
+      .sidebar:hover ~ .main-content,
+      .sidebar.show ~ .main-content {
+        margin-left: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 80px 20px 20px 20px;
+      }
+      
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .page-title {
+        font-size: 20px;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .date-range {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .quick-dates {
+        margin-left: 0;
+        flex-wrap: wrap;
+      }
+      
+      .stats-overview {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+      
+      .stat-value {
+        font-size: 28px;
+      }
+      
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .report-types {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-header {
+        padding: 15px 20px;
+      }
+      
+      .table {
+        min-width: 700px;
+      }
+      
+      .table th, .table td {
+        padding: 12px 8px;
+        font-size: 13px;
+      }
+    }
+
+    /* Mobile phones */
+    @media (max-width: 480px) {
+      .sidebar-logo {
+        padding: 15px 10px;
+      }
+      
+      .logo-img {
+        width: 30px;
+        height: 30px;
+      }
+      
+      .logo-text {
+        font-size: 16px;
+      }
+
+      .main-content {
+        padding: 80px 15px 15px 15px;
+      }
+      
+      .page-title {
+        font-size: 18px;
+      }
+      
+      .page-title i {
+        font-size: 20px;
+      }
+      
+      .btn {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+      
+      .date-range {
+        padding: 15px;
+      }
+      
+      .date-input-group {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+      
+      .date-input-group input {
+        width: 100%;
+      }
+      
+      .quick-date-btn {
+        flex: 1;
+        min-width: 70px;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr;
+      }
+      
+      .stat-box {
+        padding: 15px;
+      }
+      
+      .stat-value {
+        font-size: 24px;
+      }
+      
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+      
+      .chart-container {
+        padding: 15px;
+      }
+      
+      .chart-title {
+        font-size: 14px;
+      }
+      
+      .chart-placeholder {
+        height: 200px;
+      }
+      
+      .report-card {
+        padding: 15px;
+      }
+      
+      .section-header {
+        padding: 15px;
+      }
+      
+      .table {
+        min-width: 600px;
+      }
+      
+      .table th, .table td {
+        padding: 10px 6px;
+        font-size: 12px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        gap: 3px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 360px) {
+      .logo-img {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .logo-text {
+        font-size: 14px;
+      }
+
+      .main-content {
+        padding: 80px 10px 10px 10px;
+      }
+      
+      .date-range {
+        padding: 12px;
+      }
+      
+      .stat-box {
+        padding: 12px;
+      }
+      
+      .table {
+        min-width: 550px;
+      }
+    }
+
+    /* Landscape orientation on mobile */
+    @media (max-height: 500px) and (max-width: 768px) {
+      .stats-overview {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+      
+      .stat-box {
+        padding: 12px;
+      }
+      
+      .stat-value {
+        font-size: 20px;
+      }
+      
+      .stat-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+    <i class="ri-menu-line"></i>
+  </button>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" onclick="closeMobileMenu()"></div>
+
   <!-- Sidebar -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
+      <img src="logo.png" alt="Logo" class="logo-img">
       <div class="logo-text">ADMIN MENU</div>
     </div>
     <div class="sidebar-menu">
@@ -711,80 +1067,113 @@
         <h3 class="section-title">Recently Generated Reports</h3>
       </div>
       
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Report Name</th>
-            <th>Type</th>
-            <th>Generated By</th>
-            <th>Date Generated</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Q1 2025 Enrollment Summary</td>
-            <td><span class="report-type-badge enrollment">Enrollment</span></td>
-            <td>Admin User</td>
-            <td>Jan 18, 2025 10:30 AM</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn share" title="Share">
-                  <i class="ri-share-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Monthly Financial Report - January</td>
-            <td><span class="report-type-badge financial">Financial</span></td>
-            <td>Finance Officer</td>
-            <td>Jan 17, 2025 03:45 PM</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn share" title="Share">
-                  <i class="ri-share-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Grade 1-3 Academic Performance</td>
-            <td><span class="report-type-badge academic">Academic</span></td>
-            <td>Academic Head</td>
-            <td>Jan 16, 2025 09:15 AM</td>
-            <td>
-              <div class="action-buttons">
-                <button class="action-btn view" title="View">
-                  <i class="ri-eye-line"></i>
-                </button>
-                <button class="action-btn download" title="Download">
-                  <i class="ri-download-2-line"></i>
-                </button>
-                <button class="action-btn share" title="Share">
-                  <i class="ri-share-line"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-container">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Report Name</th>
+              <th>Type</th>
+              <th>Generated By</th>
+              <th>Date Generated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Q1 2025 Enrollment Summary</td>
+              <td><span class="report-type-badge enrollment">Enrollment</span></td>
+              <td>Admin User</td>
+              <td>Jan 18, 2025 10:30 AM</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="action-btn view" title="View">
+                    <i class="ri-eye-line"></i>
+                  </button>
+                  <button class="action-btn download" title="Download">
+                    <i class="ri-download-2-line"></i>
+                  </button>
+                  <button class="action-btn share" title="Share">
+                    <i class="ri-share-line"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Monthly Financial Report - January</td>
+              <td><span class="report-type-badge financial">Financial</span></td>
+              <td>Finance Officer</td>
+              <td>Jan 17, 2025 03:45 PM</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="action-btn view" title="View">
+                    <i class="ri-eye-line"></i>
+                  </button>
+                  <button class="action-btn download" title="Download">
+                    <i class="ri-download-2-line"></i>
+                  </button>
+                  <button class="action-btn share" title="Share">
+                    <i class="ri-share-line"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Grade 1-3 Academic Performance</td>
+              <td><span class="report-type-badge academic">Academic</span></td>
+              <td>Academic Head</td>
+              <td>Jan 16, 2025 09:15 AM</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="action-btn view" title="View">
+                    <i class="ri-eye-line"></i>
+                  </button>
+                  <button class="action-btn download" title="Download">
+                    <i class="ri-download-2-line"></i>
+                  </button>
+                  <button class="action-btn share" title="Share">
+                    <i class="ri-share-line"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
 
   <script>
+    function toggleMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+
+      sidebar.classList.toggle('show');
+      overlay.classList.toggle('show');
+
+      if (sidebar.classList.contains('show')) {
+        toggleBtn.classList.remove('ri-menu-line');
+        toggleBtn.classList.add('ri-close-line');
+        document.querySelector('.mobile-menu-toggle').classList.add('active');
+      } else {
+        toggleBtn.classList.remove('ri-close-line');
+        toggleBtn.classList.add('ri-menu-line');
+        document.querySelector('.mobile-menu-toggle').classList.remove('active');
+      }
+    }
+
+    function closeMobileMenu() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.querySelector('.mobile-overlay');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle i');
+
+      sidebar.classList.remove('show');
+      overlay.classList.remove('show');
+      toggleBtn.classList.remove('ri-close-line');
+      toggleBtn.classList.add('ri-menu-line');
+      document.querySelector('.mobile-menu-toggle').classList.remove('active');
+    }
+
     function logout() {
       if(confirm('Are you sure you want to logout?')) {
         alert('Logging out...');
@@ -831,6 +1220,22 @@
       btn.addEventListener('click', function() {
         alert(`Changing chart type to ${this.textContent}`);
       });
+    });
+
+    // Close mobile menu when clicking on menu items
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          closeMobileMenu();
+        }
+      });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        closeMobileMenu();
+      }
     });
   </script>
 </body>

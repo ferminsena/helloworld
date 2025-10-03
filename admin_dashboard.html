@@ -24,85 +24,115 @@
     }
 
     /* Sidebar */
-  .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 70px;
-    height: 100vh;
-    background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
-    transition: all 0.3s ease;
-    z-index: 999;
-    overflow: hidden;
-  }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 70px;
+      height: 100vh;
+      background: linear-gradient(180deg, #00547a 0%, #0985be 100%);
+      transition: all 0.3s ease;
+      z-index: 999;
+      overflow: hidden;
+    }
 
-  .sidebar:hover {
-    width: 250px;
-  }
+    .sidebar:hover {
+      width: 250px;
+    }
 
-  .sidebar-logo {
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
-  }
+    .sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease;
+}
 
-  .logo-text {
-    color: #fde047;
-    font-weight: bold;
-    font-size: 18px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+/* When sidebar is collapsed (70px) - center the logo */
+.sidebar:not(:hover) .sidebar-logo {
+  justify-content: flex-start;
+  padding: 20px 15px;
+}
 
-  .sidebar:hover .logo-text {
-    opacity: 1;
-  }
+/* When sidebar is expanded - align to left */
+.sidebar:hover .sidebar-logo {
+  justify-content: flex-start;
+  padding: 20px;
+}
 
-  .sidebar-menu {
-    padding-top: 20px;
-  }
+.logo-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+  opacity: 1;
+  transition: width 0.3s ease, height 0.3s ease;
+}
 
-  .menu-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
-    text-decoration: none;
-    position: relative;
-    white-space: nowrap;
-  }
+/* Ensure logo is always visible, even when sidebar is collapsed */
+.sidebar:not(:hover) .logo-img {
+  opacity: 1;
+  display: block;
+}
 
-  .menu-item:hover {
-    background: rgba(255,255,255,0.1);
-  }
+    .logo-text {
+      color: #fde047;
+      font-weight: bold;
+      font-size: 18px;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
 
-  .menu-item.active {
-    background: #3b82f6;
-  }
+    .sidebar:hover .logo-text {
+      opacity: 1;
+    }
 
-  .menu-item .icon {
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-size: 20px;
-  }
+    .sidebar-menu {
+      padding-top: 20px;
+    }
 
-  .menu-item .text {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+      text-decoration: none;
+      position: relative;
+      white-space: nowrap;
+    }
 
-  .sidebar:hover .menu-item .text {
-    opacity: 1;
-  }
+    .menu-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
 
+    .menu-item.active {
+      background: #3b82f6;
+    }
+
+    .menu-item .icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 20px;
+    }
+
+    .menu-item .text {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .sidebar:hover .menu-item .text {
+      opacity: 1;
+    }
 
     /* Main Content */
     .main-content {
@@ -112,7 +142,6 @@
       min-height: 100vh;
     }
 
-    /* When sidebar is hovered, push main content to the right */
     .sidebar:hover ~ .main-content {
       margin-left: 250px;
     }
@@ -278,7 +307,7 @@
     .table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 700px; /* Minimum width to prevent squashing */
+      min-width: 700px;
     }
 
     .table th {
@@ -485,28 +514,26 @@
     .action-card.reports { border-left: 4px solid #f39c12; }
 
     /* Mobile Menu Toggle */
-.mobile-menu-toggle {
-  display: none;
-  position: fixed;
-  top: 20px;
-  right: 20px;   /* <-- move to right instead of left */
-  z-index: 1001;
-  background: #0985be;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 20px;
-  transition: all 0.3s ease;
-}
+    .mobile-menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: #0985be;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: all 0.3s ease;
+    }
 
-/* Icon rotation when active */
-.mobile-menu-toggle.active i {
-  content: "\eb99"; /* ri-close-line (X icon from Remix) */
-  font-family: "remixicon";
-}
-
+    .mobile-menu-toggle.active i {
+      content: "\eb99";
+      font-family: "remixicon";
+    }
 
     .mobile-overlay {
       display: none;
@@ -555,13 +582,26 @@
       .sidebar:hover {
         width: 250px;
       }
+
+      .sidebar-logo {
+        justify-content: flex-start;
+        padding: 20px 15px;
+      }
       
-      /* Show menu text when sidebar is open on mobile */
-      .sidebar.show .menu-item .text {
-        opacity: 1;
+      .logo-img {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .sidebar .logo-text {
+        opacity: 0;
       }
       
       .sidebar.show .logo-text {
+        opacity: 1;
+      }
+      
+      .sidebar.show .menu-item .text {
         opacity: 1;
       }
       
@@ -574,10 +614,6 @@
         padding: 80px 20px 20px 20px;
       }
       
-      .sidebar:hover ~ .main-content,
-      .sidebar.show ~ .main-content {
-        margin-left: 0;
-      }
       
       .dashboard-header {
         flex-direction: column;
@@ -619,6 +655,19 @@
 
     /* Mobile phones */
     @media (max-width: 480px) {
+      .sidebar-logo {
+        padding: 15px 10px;
+      }
+      
+      .logo-img {
+        width: 30px;
+        height: 30px;
+      }
+      
+      .logo-text {
+        font-size: 16px;
+      }
+
       .main-content {
         padding: 80px 15px 15px 15px;
       }
@@ -692,6 +741,15 @@
 
     /* Extra small screens */
     @media (max-width: 360px) {
+      .logo-img {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .logo-text {
+        font-size: 14px;
+      }
+
       .main-content {
         padding: 80px 10px 10px 10px;
       }
@@ -740,8 +798,9 @@
   <!-- Sidebar -->
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <div class="logo-text">ADMIN MENU</div>
-    </div>
+  <img src="logo.png" alt="Logo" class="logo-img">
+  <div class="logo-text">ADMIN MENU</div>
+</div>
     <div class="sidebar-menu">
       <a href="admin_dashboard.html" class="menu-item active">
         <div class="icon"><i class="ri-dashboard-line"></i></div>
